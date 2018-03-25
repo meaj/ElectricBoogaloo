@@ -37,8 +37,12 @@ public class Launcher extends Application {
 		fxmlFile = this.getClass().getResource("../view/Login.fxml");
 		loader = new FXMLLoader(fxmlFile);
 		LoginController lc = new LoginController();
-		
 		loader.setController(lc);
+		
+		ViewManager viewManager = ViewManager.getInstance();
+		//viewManager.setConnection(conn);
+		viewManager.setPane((BorderPane) rootNode);
+
 		
 		Parent contentView = loader.load();
 		rootNode.setCenter(contentView);

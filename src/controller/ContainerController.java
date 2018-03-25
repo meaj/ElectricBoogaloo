@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import utility.ViewManager;
 
 public class ContainerController implements Initializable {
 	@FXML private MenuBar menuBar;
@@ -28,6 +29,11 @@ public class ContainerController implements Initializable {
 	}
 	
 	@FXML private void MatchesClicked(ActionEvent event) throws IOException {
+		try {
+			ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
