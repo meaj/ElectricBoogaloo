@@ -12,12 +12,14 @@ import controller.MatchPlayerController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import model.User;
 
 public class ViewManager {
 	
 	private static ViewManager singleton = null;
 	private BorderPane rootNode;
 	private ContainerController container;
+	private User user;
 	
 	public static final int LOGIN = 1;
 	public static final int MATCH_PAGE = 2;
@@ -44,6 +46,13 @@ public class ViewManager {
 		rootNode = root;
 	}
 	
+	public void setUser(User user){
+		this.user = user;
+	}
+	
+	public User getUser(){
+		return user;
+	}
 	public void changeView(int viewType, Object arg) throws Exception{
 		try {
 			GeneralController controller = null;
@@ -63,7 +72,7 @@ public class ViewManager {
 					break;
 				case LOBBY_HOST:
 					fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
-					controller = new LobbyHostController();
+					controller = new LobbyHostController(user);
 					break;
 				case LOBBY_PLAYER:
 					fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");

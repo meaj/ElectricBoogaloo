@@ -21,7 +21,7 @@ public class User {
 		setPassword(password);
 	}
 	
-	//Accessors below
+	
 	public int getId(){
 		return this.id;
 	}

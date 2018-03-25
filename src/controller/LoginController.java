@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
+import utility.ViewManager;
 
 public class LoginController implements Initializable, GeneralController {
 	
@@ -27,6 +28,7 @@ public class LoginController implements Initializable, GeneralController {
 		user.setUsername(loginUsername.getText());
 		user.setPassword(loginPassword.getText());
 		System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
+		ViewManager.getInstance().setUser(user);
 		parent.activateMenuProperties();
 	}
 	
@@ -34,6 +36,7 @@ public class LoginController implements Initializable, GeneralController {
 		user.setUsername(signupUsername.getText());
 		user.setPassword(signupPassword.getText());
 		System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
+		ViewManager.getInstance().setUser(user);
 		parent.activateMenuProperties();
 	}
 	

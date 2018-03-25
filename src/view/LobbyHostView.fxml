@@ -22,7 +22,7 @@
           <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="123.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="chatTextField" alignment="TOP_LEFT" maxWidth="373.0" onKeyReleased="#pregameChatKeyReleased" prefHeight="22.0" prefWidth="373.0" promptText="Pre-game chat" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <TextField fx:id="chatTextField" alignment="TOP_LEFT" maxWidth="373.0" prefHeight="22.0" prefWidth="373.0" promptText="Pre-game chat" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets left="5.0" top="1.0" />
                </GridPane.margin>
@@ -39,35 +39,13 @@
                   <Insets top="20.0" />
                </GridPane.margin>
             </Button>
-            <ScrollPane fx:id="ScrollView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="354.0">
-                     <children>
-                        <ListView fx:id="roleListView" layoutY="-1.0" prefHeight="185.0" prefWidth="351.0" AnchorPane.leftAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </ScrollPane>
+            <ListView fx:id="roleListView" prefHeight="185.0" prefWidth="351.0" GridPane.rowIndex="2" />
             <Label text="Roles" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="225.0" prefWidth="358.0">
-                     <children>
-                        <ListView fx:id="pregameChatListView" prefHeight="215.0" prefWidth="368.0">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </ListView>
-                     </children>
-                  </AnchorPane>
-              </content>
-               <GridPane.margin>
-                  <Insets left="5.0" top="5.0" />
-               </GridPane.margin>
-            </ScrollPane>
+            <ListView fx:id="pregameChatListView" prefHeight="215.0" prefWidth="368.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </ListView>
          </children>
       </GridPane>
    </children>
