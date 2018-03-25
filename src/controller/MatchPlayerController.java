@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
 
-public class MatchPlayerController implements Initializable {
+public class MatchPlayerController implements Initializable, GeneralController {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

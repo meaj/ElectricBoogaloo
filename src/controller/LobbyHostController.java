@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import utility.ViewManager;
 
-public class LobbyHostController implements Initializable {
+public class LobbyHostController implements Initializable, GeneralController {
 
 	@FXML private TextField chatTextField;
 	@FXML private Button startGameButton;

@@ -5,6 +5,7 @@ import java.net.URL;
 import controller.ContainerController;
 import controller.GeneralController;
 import controller.LoginController;
+import controller.MatchPageController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -51,7 +52,7 @@ public class ViewManager {
 					break;
 				case MATCH_PAGE:
 					fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
-					//controller = new AuthorDetailController((Author) arg);
+					controller = new MatchPageController();
 					break;
 				case MATCH_PLAYER:
 					fxmlFile = this.getClass().getResource("../view/MatchPlayer.fxml");
@@ -78,4 +79,3 @@ public class ViewManager {
 	}
 
 }
-
