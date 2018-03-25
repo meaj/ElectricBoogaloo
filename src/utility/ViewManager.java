@@ -31,6 +31,7 @@ public class ViewManager {
 	public static final int LOBBY_HOST = 4;
 	public static final int LOBBY_PLAYER = 5;
 	public static final int GAME_SETTINGS = 6;
+	public static final int RULES = 7;
 
 	private ViewManager() {
 
@@ -86,6 +87,10 @@ public class ViewManager {
 				case GAME_SETTINGS:
 					fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
 					controller = new GameSettingsController();
+					break;
+				case RULES:
+					fxmlFile = this.getClass().getResource("../view/RulesView.fxml");
+					controller = new RulesController();
 					break;
 			}
 		
