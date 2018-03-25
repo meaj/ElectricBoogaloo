@@ -39,7 +39,11 @@ public class LobbyHostController implements Initializable, GeneralController {
 	}
 	
 	@FXML private void settingsButtonClicked(){
-		
+		try {
+			ViewManager.getInstance().changeView(ViewManager.GAME_SETTINGS, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML private void handleMouseClicked() {
