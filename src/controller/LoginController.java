@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
 import model.UserGateway;
+import utility.ViewManager;
 
 public class LoginController implements Initializable, GeneralController {
 	
@@ -36,6 +37,7 @@ public class LoginController implements Initializable, GeneralController {
 				System.out.println("USER IS IN THE TABLE MY GUY!");
 				if(gateway.authenticateUser(user)){
 					System.out.println("SUCCESSFULLY LOGGED IN!");
+					ViewManager.getInstance().setUser(user);
 					parent.activateMenuProperties();
 				}else{
 					System.out.println("WRONG PASSWORD MY DUDE!");
@@ -55,6 +57,7 @@ public class LoginController implements Initializable, GeneralController {
 		user.setPassword(signupPassword.getText());
 		System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
 		parent.activateMenuProperties();
+		ViewManager.getInstance().setUser(user);
 	}
 	
 	@Override
