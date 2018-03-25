@@ -2,6 +2,7 @@ package utility;
 
 import java.net.URL;
 
+import controller.ContainerController;
 import controller.GeneralController;
 import controller.LoginController;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ public class ViewManager {
 	
 	private static ViewManager singleton = null;
 	private BorderPane rootNode;
+	private ContainerController container;
 	
 	public static final int LOGIN = 1;
 	public static final int MATCH_PAGE = 2;
@@ -20,7 +22,7 @@ public class ViewManager {
 	public static final int LOBBY_PLAYER = 5;
 
 	private ViewManager() {
-		
+
 	}
 
 	public static ViewManager getInstance() {
@@ -29,6 +31,9 @@ public class ViewManager {
 		}
 
 		return singleton;
+	}
+	public void setContainer(ContainerController c){
+		container = c;
 	}
 	
 	public void setPane(BorderPane root) {
@@ -42,7 +47,7 @@ public class ViewManager {
 			switch(viewType) {
 				case LOGIN:
 					fxmlFile = this.getClass().getResource("../view/Login.fxml");
-					controller = new LoginController();
+					controller = new LoginController(container);
 					break;
 				case MATCH_PAGE:
 					fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");

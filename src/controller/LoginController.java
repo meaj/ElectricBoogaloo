@@ -17,21 +17,24 @@ public class LoginController implements Initializable, GeneralController {
 	@FXML private PasswordField signupPassword;
 	
 	private User user;
-	
-	public LoginController(){
+	private ContainerController parent;
+	public LoginController(ContainerController parent){
 		user = new User();
+		this.parent = parent;
 	}
 	
 	@FXML void LoginClicked(){
 		user.setUsername(loginUsername.getText());
 		user.setPassword(loginPassword.getText());
 		System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
+		parent.activateMenuProperties();
 	}
 	
 	@FXML void SignUpClicked(){
 		user.setUsername(signupUsername.getText());
 		user.setPassword(signupPassword.getText());
 		System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
+		parent.activateMenuProperties();
 	}
 	
 	@Override

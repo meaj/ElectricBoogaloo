@@ -16,15 +16,22 @@ import utility.ViewManager;
 
 public class ContainerController implements Initializable {
 	@FXML private MenuBar menuBar;
-	@FXML private MenuItem menuItemHome;
 	@FXML private MenuItem menuItemMatches;
 	@FXML private MenuItem menuItemRules;
 	@FXML private MenuItem menuItemExit;
 	@FXML private BorderPane rootPane;
 	
+
+	
 	public ContainerController(){
 		
 	}
+	
+	public void activateMenuProperties(){
+		menuItemMatches.setDisable(false);
+		menuItemRules.setDisable(false);
+	}
+	
 	@FXML private void HomeClicked(ActionEvent event) throws IOException {
 		
 
@@ -53,5 +60,7 @@ public class ContainerController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		menuBar.setFocusTraversable(true);
+		menuItemMatches.setDisable(true);
+		menuItemRules.setDisable(true);
 	}
 }
