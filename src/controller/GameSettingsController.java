@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import utility.ViewManager;
 
 public class GameSettingsController extends SettingsController implements Initializable, GeneralController {
-	@FXML private void saveSettingsClicked(ActionEvent event) throws IOException {
+	@FXML private void saveButtonClicked(ActionEvent event) throws IOException {
 		try {
 			ViewManager.getInstance().changeView(ViewManager.LOBBY_HOST, null);
 		} catch (Exception e) {
