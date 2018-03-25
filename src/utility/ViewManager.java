@@ -8,7 +8,7 @@ import controller.LobbyHostController;
 import controller.LobbyPlayerController;
 import controller.LoginController;
 import controller.MatchPageController;
-import controller.MatchPlayerController;
+import controller.RunningGameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -68,7 +68,7 @@ public class ViewManager {
 					break;
 				case MATCH_PLAYER:
 					fxmlFile = this.getClass().getResource("../view/MatchPlayer.fxml");
-					controller = new MatchPlayerController();
+					controller = new RunningGameController();
 					break;
 				case LOBBY_HOST:
 					fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
