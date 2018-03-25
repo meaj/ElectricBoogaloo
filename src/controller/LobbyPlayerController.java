@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
 
-public class LobbyPlayerController implements Initializable {
+public class LobbyPlayerController implements Initializable, GeneralController {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
