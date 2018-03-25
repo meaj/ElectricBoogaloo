@@ -13,6 +13,11 @@ import utility.ViewManager;
 
 public class MatchPageController implements Initializable, GeneralController {
 	
+	private boolean detective;
+	private boolean mafia;
+	private boolean villager;
+	private boolean police;
+	
 	@FXML private ChoiceBox<Integer> maxPlayers;
 	
 	@FXML private void CreateMatchClicked(ActionEvent event) throws IOException {
@@ -23,10 +28,36 @@ public class MatchPageController implements Initializable, GeneralController {
 		}
 
 	}
-//more stuff later
+	
+	@FXML private void MatchSearchClicked(ActionEvent event) throws IOException {
+		//Should check database for available matches and search based on filters
+	}
+	
+	@FXML private void setDetective(ActionEvent event) throws IOException {
+		detective=!detective;
+		System.out.println(event.getTarget());
+	}
+	
+	@FXML private void setMafia(ActionEvent event) throws IOException {
+		mafia=!mafia;
+		System.out.println(event.getTarget());
+	}
+	
+	@FXML private void setVillager(ActionEvent event) throws IOException {
+		villager=!villager;
+	}
+	
+	@FXML private void setPolice(ActionEvent event) throws IOException {
+		police=!police;
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		maxPlayers.setItems(FXCollections.observableArrayList(3,4,5,6,7,8));
+		detective=false;
+		mafia=false;
+		villager=false;
+		police=true;
 	}
 
 }

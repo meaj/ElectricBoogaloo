@@ -19,16 +19,20 @@ public class LobbyHostController implements Initializable, GeneralController {
 	public LobbyHostController(){
 	}
 	
-	@FXML void startGameButtonClicked(){
+	@FXML private void startGameButtonClicked(){
 		try {
-			ViewManager.getInstance().changeView(ViewManager.MATCH_PLAYER, null);
+			ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	@FXML void settingsButtonClicked(){
+	@FXML private void settingsButtonClicked(){
 		//
+	}
+	
+	@FXML private void handleMouseClicked() {
+		
 	}
 	
 	@Override

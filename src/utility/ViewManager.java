@@ -21,7 +21,7 @@ public class ViewManager {
 	
 	public static final int LOGIN = 1;
 	public static final int MATCH_PAGE = 2;
-	public static final int MATCH_PLAYER = 3;
+	public static final int RUNNING_GAME = 3;
 	public static final int LOBBY_HOST = 4;
 	public static final int LOBBY_PLAYER = 5;
 
@@ -57,8 +57,8 @@ public class ViewManager {
 					fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
 					controller = new MatchPageController();
 					break;
-				case MATCH_PLAYER:
-					fxmlFile = this.getClass().getResource("../view/MatchPlayer.fxml");
+				case RUNNING_GAME:
+					fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
 					controller = new RunningGameController();
 					break;
 				case LOBBY_HOST:
