@@ -1,6 +1,7 @@
 package utility;
 
 import java.net.URL;
+import java.sql.Connection;
 
 import controller.ContainerController;
 import controller.GeneralController;
@@ -12,12 +13,14 @@ import controller.RunningGameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import model.UserGateway;
 
 public class ViewManager {
 	
 	private static ViewManager singleton = null;
 	private BorderPane rootNode;
 	private ContainerController container;
+	private Connection connection;
 	
 	public static final int LOGIN = 1;
 	public static final int MATCH_PAGE = 2;
@@ -51,7 +54,7 @@ public class ViewManager {
 			switch(viewType) {
 				case LOGIN:
 					fxmlFile = this.getClass().getResource("../view/Login.fxml");
-					controller = new LoginController(container);
+					controller = new LoginController(container, new UserGateway(connection));
 					break;
 				case MATCH_PAGE:
 					fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
@@ -79,6 +82,14 @@ public class ViewManager {
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
+	}
+	
+	public void setConnection(Connection con) {
+		connection = con;
+	}
+	
+	public Connection getConnection() {
+		return connection;
 	}
 
 }

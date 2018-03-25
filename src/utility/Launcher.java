@@ -1,19 +1,22 @@
 package utility;
 
 import java.net.URL;
+import java.sql.Connection;
 
 import controller.ContainerController;
 import controller.LoginController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.UserGateway;
 
 public class Launcher extends Application {
 
-	
+	private Connection conn;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -36,15 +39,29 @@ public class Launcher extends Application {
 		
 		fxmlFile = this.getClass().getResource("../view/Login.fxml");
 		loader = new FXMLLoader(fxmlFile);
-		LoginController lc = new LoginController(cc);
+		LoginController lc = new LoginController(cc, new UserGateway(conn));
 		loader.setController(lc);
 		
 		ViewManager viewManager = ViewManager.getInstance();
-		//viewManager.setConnection(conn);
+		viewManager.setConnection(conn);
 		viewManager.setPane((BorderPane) rootNode);
 		viewManager.setContainer(cc);
 		
 		Parent contentView = loader.load();
 		rootNode.setCenter(contentView);
+	}
+	
+	@Override
+	public void init() throws Exception {
+		super.init();
+
+		System.out.println("Creating connection...");
+		
+		try {
+			conn = ConnectionFactory.createConnection();
+		} catch (Exception e) {
+			System.out.println("Cannot connect to db");
+			Platform.exit();
+		}
 	}
 }
