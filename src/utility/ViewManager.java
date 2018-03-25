@@ -3,6 +3,7 @@ package utility;
 import java.net.URL;
 
 import controller.ContainerController;
+import controller.GameSettingsController;
 import controller.GeneralController;
 import controller.LobbyHostController;
 import controller.LobbyPlayerController;
@@ -26,6 +27,7 @@ public class ViewManager {
 	public static final int RUNNING_GAME = 3;
 	public static final int LOBBY_HOST = 4;
 	public static final int LOBBY_PLAYER = 5;
+	public static final int GAME_SETTINGS = 6;
 
 	private ViewManager() {
 
@@ -77,6 +79,10 @@ public class ViewManager {
 				case LOBBY_PLAYER:
 					fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");
 					controller = new LobbyPlayerController();
+					break;
+				case GAME_SETTINGS:
+					fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
+					controller = new GameSettingsController();
 					break;
 			}
 		
