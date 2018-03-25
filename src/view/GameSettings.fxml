@@ -5,7 +5,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
@@ -17,7 +16,7 @@
                </font>
             </Label>
             <Label layoutX="115.0" layoutY="118.0" text="Maximum Players:" />
-            <Button fx:id="matchSearchButton" layoutX="259.0" layoutY="295.0" mnemonicParsing="false" text="Save Settings" />
+            <Button fx:id="saveSettingsButton" layoutX="259.0" layoutY="295.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save Settings" />
             <CheckBox fx:id="allowedDetective" layoutX="407.0" layoutY="139.0" mnemonicParsing="false" text="Detective" />
             <CheckBox fx:id="allowedVillager" layoutX="406.0" layoutY="206.0" mnemonicParsing="false" text="Villager" />
             <CheckBox fx:id="allowedPolice" layoutX="406.0" layoutY="182.0" mnemonicParsing="false" text="Police" />
