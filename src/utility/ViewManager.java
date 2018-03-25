@@ -4,8 +4,11 @@ import java.net.URL;
 
 import controller.ContainerController;
 import controller.GeneralController;
+import controller.LobbyHostController;
+import controller.LobbyPlayerController;
 import controller.LoginController;
 import controller.MatchPageController;
+import controller.MatchPlayerController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -56,15 +59,15 @@ public class ViewManager {
 					break;
 				case MATCH_PLAYER:
 					fxmlFile = this.getClass().getResource("../view/MatchPlayer.fxml");
-					//controller = new BookListController(new BookGateway(conn));
+					controller = new MatchPlayerController();
 					break;
 				case LOBBY_HOST:
 					fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
-					//controller = new BookDetailController((Book) arg, publishers);
+					controller = new LobbyHostController();
 					break;
 				case LOBBY_PLAYER:
 					fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");
-					//controller = new AuditListController(new BookGateway(conn), (Book)arg );
+					controller = new LobbyPlayerController();
 					break;
 			}
 		
