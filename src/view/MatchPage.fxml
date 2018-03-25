@@ -29,13 +29,13 @@
                </font>
             </Label>
             <Label layoutX="21.0" layoutY="39.0" text="Maximum Players:" />
-            <Button fx:id="matchSearchButton" layoutX="22.0" layoutY="278.0" mnemonicParsing="false" text="Match Search" />
+            <Button fx:id="matchSearchButton" layoutX="22.0" layoutY="278.0" mnemonicParsing="false" onAction="#MatchSearchClicked" text="Match Search" />
             <Button fx:id="matchCreateButton" layoutX="173.0" layoutY="278.0" mnemonicParsing="false" onAction="#CreateMatchClicked" text="Create Match" />
-            <CheckBox fx:id="allowedDetective" layoutX="187.0" layoutY="60.0" mnemonicParsing="false" text="Detective" />
-            <CheckBox fx:id="allowedVillager" layoutX="186.0" layoutY="127.0" mnemonicParsing="false" text="Villager" />
-            <CheckBox fx:id="allowedPolice" layoutX="186.0" layoutY="103.0" mnemonicParsing="false" text="Police" />
+            <CheckBox fx:id="allowedDetective" layoutX="187.0" layoutY="60.0" mnemonicParsing="false" onAction="#setCheckBox" text="Detective" />
+            <CheckBox fx:id="allowedVillager" layoutX="186.0" layoutY="127.0" mnemonicParsing="false" onAction="#setCheckBox" text="Villager" />
+            <CheckBox fx:id="allowedPolice" layoutX="186.0" layoutY="103.0" mnemonicParsing="false" onAction="#setCheckBox" text="Police" />
             <Label layoutX="178.0" layoutY="39.0" text="Allowed Roles:" />
-            <CheckBox fx:id="allowedMafia" layoutX="187.0" layoutY="82.0" mnemonicParsing="false" text="Mafia" />
+            <CheckBox fx:id="allowedMafia" layoutX="187.0" layoutY="82.0" mnemonicParsing="false" onAction="#setCheckBox" text="Mafia" />
             <Label layoutX="22.0" layoutY="111.0" text="Match Name:" />
             <TextField fx:id="matchNameVal" layoutX="20.0" layoutY="135.0" promptText="Match Name" />
          </children>
