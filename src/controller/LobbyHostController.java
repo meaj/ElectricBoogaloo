@@ -28,7 +28,7 @@ public class LobbyHostController implements Initializable, GeneralController {
 	}
 	
 	@FXML void settingsButtonClicked(){
-		
+		//
 	}
 	
 	@Override
