@@ -19,6 +19,10 @@ public class LobbyHostController implements Initializable, GeneralController {
 	public LobbyHostController(){
 	}
 	
+	@FXML void pregameChatKeyReleased(){
+
+	}
+	
 	@FXML void startGameButtonClicked(){
 		try {
 			ViewManager.getInstance().changeView(ViewManager.MATCH_PLAYER, null);
@@ -28,7 +32,7 @@ public class LobbyHostController implements Initializable, GeneralController {
 	}
 	
 	@FXML void settingsButtonClicked(){
-		//
+		
 	}
 	
 	@Override
