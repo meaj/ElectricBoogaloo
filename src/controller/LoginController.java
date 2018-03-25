@@ -9,7 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
 
-public class LoginController implements Initializable {
+public class LoginController implements Initializable, GeneralController {
 	
 	@FXML private TextField loginUsername;
 	@FXML private TextField signupUsername;
