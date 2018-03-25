@@ -19,7 +19,7 @@ public class MatchPageController implements Initializable, GeneralController {
 		}
 
 	}
-
+//more stuff later
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
