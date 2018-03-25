@@ -10,6 +10,7 @@ import controller.LobbyHostController;
 import controller.LobbyPlayerController;
 import controller.LoginController;
 import controller.MatchPageController;
+import controller.RulesController;
 import controller.RunningGameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
