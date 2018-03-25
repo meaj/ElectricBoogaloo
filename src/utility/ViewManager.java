@@ -1,6 +1,7 @@
 package utility;
 
 import java.net.URL;
+import java.sql.Connection;
 
 import controller.ContainerController;
 import controller.GameSettingsController;
@@ -9,10 +10,12 @@ import controller.LobbyHostController;
 import controller.LobbyPlayerController;
 import controller.LoginController;
 import controller.MatchPageController;
+import controller.RulesController;
 import controller.RunningGameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import model.UserGateway;
 import model.User;
 
 public class ViewManager {
@@ -20,6 +23,7 @@ public class ViewManager {
 	private static ViewManager singleton = null;
 	private BorderPane rootNode;
 	private ContainerController container;
+	private Connection connection;
 	private User user;
 	
 	public static final int LOGIN = 1;
@@ -28,6 +32,7 @@ public class ViewManager {
 	public static final int LOBBY_HOST = 4;
 	public static final int LOBBY_PLAYER = 5;
 	public static final int GAME_SETTINGS = 6;
+	public static final int RULES = 7;
 
 	private ViewManager() {
 
@@ -62,7 +67,7 @@ public class ViewManager {
 			switch(viewType) {
 				case LOGIN:
 					fxmlFile = this.getClass().getResource("../view/Login.fxml");
-					controller = new LoginController(container);
+					controller = new LoginController(container, new UserGateway(connection));
 					break;
 				case MATCH_PAGE:
 					fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
@@ -70,7 +75,7 @@ public class ViewManager {
 					break;
 				case RUNNING_GAME:
 					fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
-					controller = new RunningGameController();
+					controller = new RunningGameController(user);
 					break;
 				case LOBBY_HOST:
 					fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
@@ -84,6 +89,10 @@ public class ViewManager {
 					fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
 					controller = new GameSettingsController();
 					break;
+				case RULES:
+					fxmlFile = this.getClass().getResource("../view/RulesView.fxml");
+					controller = new RulesController();
+					break;
 			}
 		
 			FXMLLoader loader = new FXMLLoader(fxmlFile);
@@ -94,6 +103,14 @@ public class ViewManager {
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
+	}
+	
+	public void setConnection(Connection con) {
+		connection = con;
+	}
+	
+	public Connection getConnection() {
+		return connection;
 	}
 
 }

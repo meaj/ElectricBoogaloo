@@ -47,7 +47,11 @@ public class ContainerController implements Initializable {
 	}
 	
 	@FXML private void RulesClicked(ActionEvent event) throws IOException {
-
+		try {
+			ViewManager.getInstance().changeView(ViewManager.RULES, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML private void ExitClicked(ActionEvent event) throws IOException {
