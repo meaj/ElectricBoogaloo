@@ -1,10 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -33,10 +29,7 @@ public class LobbyHostController implements Initializable, GeneralController {
 		this.user = user;
 		chatLog = FXCollections.observableArrayList();
 	}
-	
-	
-	
-	
+
 	@FXML void startGameButtonClicked(){
 		try {
 			ViewManager.getInstance().changeView(ViewManager.MATCH_PLAYER, null);
