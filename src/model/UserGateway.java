@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -70,6 +71,31 @@ private Connection conn;
 			return true;
 		} else{
 			return false;
+		}
+	}
+	
+	public void insert(User user) throws SQLException{
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("INSERT INTO User (username, password)"
+										+ "VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			st.setString(1, user.getUsername());
+			st.setString(2, user.getPassword());
+			st.execute();
+			ResultSet rs = st.getGeneratedKeys();
+			if(rs.next()) {
+				user.setId(rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			try {
+				if(st != null) {
+				st.close();
+				}
+			} catch(SQLException e) {
+				throw e;
+			}
 		}
 	}
 }
