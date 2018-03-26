@@ -40,7 +40,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				m.setSendUser(ViewManager.getInstance().getUser().getUsername());
 				gateway.insert(m);
 				chatLog = gateway.getMessages();
-				System.out.println(chatLog);
 				chatTextField.clear();
 				chatListView.setItems(chatLog);
 			}
