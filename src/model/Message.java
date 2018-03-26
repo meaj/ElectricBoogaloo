@@ -8,23 +8,26 @@ public class Message {
 	private int id;
 	private SimpleIntegerProperty lobbyid;
 	private SimpleStringProperty message;
-	private SimpleIntegerProperty senduserid;
+	private SimpleStringProperty senduser;
 	
 	public Message() {
 		id = -1;
 		lobbyid = new SimpleIntegerProperty();
 		message = new SimpleStringProperty();
-		senduserid = new SimpleIntegerProperty();
+		senduser = new SimpleStringProperty();
 	}
 	
-	public Message(int id, int lobbyid, String message, int senduserid){
+	public Message(int id, int lobbyid, String message, String senduser){
 		this();
 		setId(id);
 		setLobbyId(lobbyid);
 		setMessage(message);
-		setSendUserId(senduserid);
+		setSendUser(senduser);
 	}
 	
+	public String toString(){
+		return senduser +" : "+ message;
+	}
 	
 	public int getId(){
 		return this.id;
@@ -50,11 +53,11 @@ public class Message {
 		this.message.set(message);
 	}
 	
-	public int getSendUserId() {
-		return senduserid.get();
+	public String getSendUser() {
+		return senduser.get();
 	}
 
-	public void setSendUserId(int senduserid) {
-		this.senduserid.set(senduserid);
+	public void setSendUser(String senduserid) {
+		this.senduser.set(senduserid);
 	}
 }
