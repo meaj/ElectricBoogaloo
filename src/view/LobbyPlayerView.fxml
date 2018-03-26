@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -22,12 +23,11 @@
           <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="123.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="chatTextField" onAction="#onEnter" alignment="TOP_LEFT" maxWidth="373.0" prefHeight="22.0" prefWidth="373.0" promptText="Pre-game chat" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <TextField fx:id="chatTextField" alignment="TOP_LEFT" maxWidth="373.0" onAction="#onEnter" prefHeight="22.0" prefWidth="373.0" promptText="Pre-game chat" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets left="5.0" top="1.0" />
                </GridPane.margin>
             </TextField>
-            <Button fx:id="readyUpButton" alignment="CENTER" mnemonicParsing="false" onAction="#readyUpButtonClicked" prefHeight="22.0" prefWidth="91.0" text="Ready Up" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label fx:id="playersLabel" text="Players : 1/8" />
@@ -63,6 +63,11 @@
                   <Insets left="5.0" top="5.0" />
                </GridPane.margin>
             </ScrollPane>
+            <CheckBox fx:id="readyUpButton" mnemonicParsing="false" onAction="#readyUpButtonClicked" text="Ready" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </CheckBox>
          </children>
       </GridPane>
    </children>
