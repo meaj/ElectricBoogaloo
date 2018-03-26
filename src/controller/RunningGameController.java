@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -60,7 +61,12 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		  }catch (InterruptedException e) {
 			e.printStackTrace();
 		  }
-	      chatListView.setItems(chatLog);
+	      Platform.runLater(new Runnable() {
+              @Override public void run() {
+            	  chatListView.setItems(chatLog);
+              }
+          });
+	      
 	    }
 	     
 
