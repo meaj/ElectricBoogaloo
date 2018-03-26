@@ -26,7 +26,7 @@ public class Message {
 	}
 	
 	public String toString(){
-		return senduser +" : "+ message;
+		return senduser.get() +" : "+ message.get();
 	}
 	
 	public int getId(){
