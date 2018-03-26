@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,24 +28,17 @@ public class RunningGameController implements Initializable, GeneralController {
 		chatLog = FXCollections.observableArrayList();
 	}
 	
-	
+	@FXML void onEnter(ActionEvent ae){
+		System.out.println("hello");
+		chatLog.add(user.getUsername() + ": " + chatTextField.getText());
+		chatTextField.clear();
+		chatListView.setItems(chatLog);
+	}
 	
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		chatTextField.setOnKeyPressed(new EventHandler<KeyEvent>(){
-		    @Override
-		    public void handle(KeyEvent ke){
-		      if (ke.getCode().equals(KeyCode.ENTER)) {
-		    	  chatLog.add(user.getUsername() + ": " + chatTextField.getText());
-		    	  chatTextField.clear();
-		         }
-		      }
-		    });
-			chatListView.setItems(chatLog);
 		}
-
-		
 	}
 
