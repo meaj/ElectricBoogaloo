@@ -109,6 +109,8 @@ public class MatchPageController extends SettingsController implements Initializ
 		    					"Failed to initialize lobby", 
 		    					"This isn't good :thumbsup:");
 		    			return;
+		    		} catch(NullPointerException e) {
+		    			
 		    		}
 		        }
 		    }
