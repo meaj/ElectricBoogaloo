@@ -88,12 +88,14 @@ public class Launcher extends Application {
 						}
 					}
 				}
+				usergate.resetUserVotes(user.getUsername());
 				RoleGateway roleGate = new RoleGateway(conn);
 				roleGate.updateRemoveUser(user.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+	
 	}
 	
 }

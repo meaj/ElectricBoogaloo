@@ -78,7 +78,7 @@ public class ViewManager {
 				break;
 			case RUNNING_GAME:
 				fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
-				controller = new RunningGameController(arg, user, new MessageGateway(connection));
+				controller = new RunningGameController(arg, user, new MessageGateway(connection), new LobbyGateway(connection), new RoleGateway(connection), new UserGateway(connection));
 				break;
 			case LOBBY_HOST:
 				fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");

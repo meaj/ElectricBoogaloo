@@ -15,8 +15,9 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="322.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="280.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label fx:id="labelRolesInMatch" prefHeight="16.0" prefWidth="405.0" text="Roles: ">
@@ -26,7 +27,8 @@
             </Label>
             <ListView fx:id="chatListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
             <TextField fx:id="chatTextField" onAction="#onEnter" promptText="Enter a Message" GridPane.rowIndex="2" />
-            <ListView fx:id="listVotes" prefHeight="200.0" prefWidth="157.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ListView fx:id="playerList" prefHeight="275.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="voteButton" mnemonicParsing="false" onAction="#onVoteClicked" text="Vote" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
          </children>
       </GridPane>
    </children>
