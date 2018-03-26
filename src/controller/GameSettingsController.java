@@ -1,10 +1,8 @@
 package controller;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

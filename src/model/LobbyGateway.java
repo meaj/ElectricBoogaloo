@@ -118,4 +118,24 @@ private Connection conn;
 			}
 		}
 	}
+	
+	public int getReadyCount(int lobbyId) throws SQLException {
+		int readyCount = 0;
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM Lobby WHERE id = ?");
+			st.setInt(1, lobbyId);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				readyCount = rs.getInt("readycount");
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+		return readyCount;
+	}
 }

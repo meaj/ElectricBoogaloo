@@ -9,6 +9,7 @@ public class User {
 	private SimpleStringProperty password;
 	private int lobbyid;
 	private boolean ready = false;
+	private String role;
 	
 	public User() {
 		id = -1;
@@ -65,5 +66,13 @@ public class User {
 	
 	public void setReady(boolean ready) {
 		this.ready = ready;
+	}
+	
+	public String getRole() {
+		return this.role;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

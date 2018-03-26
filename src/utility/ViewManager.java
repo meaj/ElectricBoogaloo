@@ -82,11 +82,11 @@ public class ViewManager {
 				break;
 			case LOBBY_HOST:
 				fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
-				controller = new LobbyHostController(arg, new MessageGateway(connection), new LobbyGateway(connection));
+				controller = new LobbyHostController(arg, new MessageGateway(connection), new LobbyGateway(connection), new RoleGateway(connection));
 				break;
 			case LOBBY_PLAYER:
 				fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");
-				controller = new LobbyPlayerController(arg, new MessageGateway(connection), new LobbyGateway(connection));
+				controller = new LobbyPlayerController(arg, new MessageGateway(connection), new LobbyGateway(connection), new RoleGateway(connection));
 				break;
 			case GAME_SETTINGS:
 				fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");

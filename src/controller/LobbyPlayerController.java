@@ -18,6 +18,8 @@ import model.Lobby;
 import model.LobbyGateway;
 import model.Message;
 import model.MessageGateway;
+import model.Role;
+import model.RoleGateway;
 import model.User;
 import utility.ViewManager;
 
@@ -28,19 +30,26 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 	@FXML private ListView<Message> pregameChatListView;
 	@FXML private ListView<User> playerListView;
 	@FXML private Label playersLabel;
+	@FXML private ListView<Role> roleListView;
 	
 	private ObservableList<Message> chatLog;
 	private ObservableList<User> users;
+	private ObservableList<Role> roles;
 	private MessageGateway messageGateway;
 	private LobbyGateway lobbyGateway;
+	private RoleGateway roleGateway;
 	private Thread thread;
 	private Lobby lobby;
-
-	public LobbyPlayerController(Object lobby, MessageGateway messageGate, LobbyGateway lobbyGate){
+	private User user;
+	private Role role = null;
+	
+	public LobbyPlayerController(Object lobby, MessageGateway messageGate, LobbyGateway lobbyGate, RoleGateway roleGate){
 		this.lobby = (Lobby) lobby;
 		this.messageGateway = messageGate;
 		this.lobbyGateway = lobbyGate;
+		this.roleGateway = roleGate;
 		chatLog = FXCollections.observableArrayList();
+		this.user = ViewManager.getInstance().getUser();
 		this.start();
 	}
 
@@ -50,15 +59,10 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 				Thread.sleep(1000);
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
-				/*
-				 * if(user.getRole != null) {
-				 * 		ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
-				 * 		user.setLobbyId(lobby.getId());
-				 * 		break;
-				 * }
-				 * 
-				 */
-			} catch (Exception e) {
+				role = roleGateway.getRoleByUserId(user.getId());
+			}  catch (InterruptedException e) {
+				break;
+			}	catch (Exception e) {
 				  e.printStackTrace();
 			}
 			Platform.runLater(new Runnable() {
@@ -66,7 +70,14 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 					pregameChatListView.setItems(chatLog);
 					playerListView.setItems(users);
 					playersLabel.setText("Players: " + users.size() + "/" + lobby.getMaxPlayers());
+					if(role != null) {
+						user.setRole(role.getRole());
+						user.setLobbyId(lobby.getId());
+						ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
+						stopThread();
+					}
 				}
+				
 			});
 		}
 	}
@@ -79,6 +90,9 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 		 }
 	}
 	
+	public void stopThread() {
+		thread.interrupt();
+	}
 	@FXML void readyUpButtonClicked() {
 		User user = ViewManager.getInstance().getUser();
 		try {
@@ -115,5 +129,11 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		pregameChatListView.setItems(chatLog);
+		try {
+			roles = roleGateway.getRoles(this.lobby.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		roleListView.setItems(roles);
 	}
 }

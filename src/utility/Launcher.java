@@ -4,8 +4,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.mysql.jdbc.UpdatableResultSet;
-
 import controller.ContainerController;
 import controller.LoginController;
 import javafx.application.Application;
