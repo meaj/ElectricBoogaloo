@@ -19,8 +19,8 @@ import utility.ViewManager;
 public class RunningGameController implements Initializable, GeneralController {
 
 	@FXML private TextField chatTextField;
-	@FXML private ListView<Message> chatListView;
-	@FXML private ObservableList<Message> chatLog; 
+	@FXML private ListView<String> chatListView;
+	@FXML private ObservableList<String> chatLog; 
 	
 	private MessageGateway gateway;
 	
@@ -31,13 +31,12 @@ public class RunningGameController implements Initializable, GeneralController {
 	
 	@FXML void onEnter(ActionEvent ae){
 		try {
-		System.out.println("hello");
 		Message m = new Message();
 		m.setMessage(chatTextField.getText());
 		m.setLobbyId(1);
 		m.setSendUserId(ViewManager.getInstance().getUser().getId());
 		gateway.insert(m);
-		chatLog.add(m);
+		chatLog.add(ViewManager.getInstance().getUser().getUsername() +" : "+m.getMessage());
 		chatTextField.clear();
 		chatListView.setItems(chatLog);
 		}
