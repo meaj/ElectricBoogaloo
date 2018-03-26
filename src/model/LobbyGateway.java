@@ -16,12 +16,12 @@ private Connection conn;
 		this.conn = con;
 	}
 	
-	public ObservableList<User> getUsersByLobbyId(Lobby lobby) throws SQLException {
+	public ObservableList<User> getUsersByLobbyId(int lobbyId) throws SQLException {
 		ObservableList<User> users = FXCollections.observableArrayList();
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("SELECT * FROM User WHERE lobbyid = ? ORDER BY id");
-			st.setInt(1, lobby.getId());
+			st.setInt(1, lobbyId);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
 				User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"));
@@ -59,11 +59,11 @@ private Connection conn;
 		}
 	}
 	
-	public void delete(Lobby lobby) throws SQLException {
+	public void delete(int lobbyId) throws SQLException {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("DELETE FROM Lobby WHERE id = ?");
-			st.setInt(1, lobby.getId());
+			st.setInt(1, lobbyId);
 			st.execute();
 		} catch(SQLException e){
 			e.printStackTrace();

@@ -48,7 +48,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 			try {
 				Thread.sleep(1000);
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
-				users = lobbyGateway.getUsersByLobbyId(lobby);
+				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 			} catch (Exception e) {
 				  e.printStackTrace();
 			}

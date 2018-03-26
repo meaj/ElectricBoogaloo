@@ -94,7 +94,8 @@ public class GameSettingsController implements Initializable, GeneralController 
 				numDetectives, numVampires, numVillagers, numPriests);
 		try {
 			this.lobbyGate.insertLobby(lobby);
-			this.userGate.updateUserLobby(user, lobby);
+			this.userGate.updateUserLobby(user, lobby.getId());
+			user.setLobbyId(lobby.getId());
 			ViewManager.getInstance().changeView(ViewManager.LOBBY_HOST, lobby);
 		} catch (SQLException e) {
 			AlertHelper.showWarningMessage("Error", 

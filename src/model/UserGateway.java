@@ -101,11 +101,15 @@ private Connection conn;
 		}
 	}
 	
-	public void updateUserLobby(User user, Lobby lobby) throws SQLException {
+	public void updateUserLobby(User user, int lobbyId) throws SQLException {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("UPDATE User Set lobbyid = ? WHERE id = ?");
-			st.setInt(1, lobby.getId());
+			if(lobbyId == -1) {
+				st.setNull(1, java.sql.Types.INTEGER);
+			} else {
+				st.setInt(1, lobbyId);
+			}
 			st.setInt(2, user.getId());
 			st.executeUpdate();
 		} catch (SQLException e) {

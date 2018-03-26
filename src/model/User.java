@@ -7,6 +7,7 @@ public class User {
 	private int id;
 	private SimpleStringProperty username;
 	private SimpleStringProperty password;
+	private int lobbyid;
 	
 	public User() {
 		id = -1;
@@ -19,6 +20,14 @@ public class User {
 		setId(id);
 		setUsername(username);
 		setPassword(password);
+	}
+	
+	public int getLobbyId() {
+		return this.lobbyid;
+	}
+	
+	public void setLobbyId(int id) {
+		this.lobbyid = id;
 	}
 	
 	public String toString() {
@@ -48,4 +57,5 @@ public class User {
 	public void setPassword(String password) {
 		this.password.set(password);
 	}
+
 }

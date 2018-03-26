@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,7 +48,7 @@ public class ContainerController implements Initializable {
 	@FXML private void ExitClicked(ActionEvent event) {
         int warningButton=JOptionPane.showConfirmDialog (null, "Are you sure you would like to exit?","Warning",JOptionPane.OK_CANCEL_OPTION);
         if(warningButton == JOptionPane.OK_OPTION){
-           System.exit(0);
+           Platform.exit();
         }
 	}
 

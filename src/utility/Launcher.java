@@ -2,16 +2,21 @@ package utility;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import controller.ContainerController;
 import controller.LoginController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.LobbyGateway;
+import model.User;
 import model.UserGateway;
 
 public class Launcher extends Application {
@@ -64,4 +69,25 @@ public class Launcher extends Application {
 			Platform.exit();
 		}
 	}
+	
+	@Override
+	public void stop() {
+		User user = ViewManager.getInstance().getUser();
+		if(user != null) {
+			UserGateway usergate = new UserGateway(conn);
+			try {
+				usergate.updateUserLobby(ViewManager.getInstance().getUser(), -1);
+				if(user.getLobbyId() > 0) {
+					LobbyGateway lobbygate = new LobbyGateway(conn);
+					ObservableList<User> users = lobbygate.getUsersByLobbyId(user.getLobbyId());
+					if(users.size() == 0) {
+						lobbygate.delete(user.getLobbyId());
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

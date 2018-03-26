@@ -56,7 +56,8 @@ public class MatchPageController extends SettingsController implements Initializ
 		        if (click.getClickCount() == 2) {
 		        	Lobby currentItemSelected = matchNameList.getSelectionModel().getSelectedItem();
 		        	try {
-		    			userGate.updateUserLobby(user, currentItemSelected);
+		    			userGate.updateUserLobby(user, currentItemSelected.getId());
+		    			user.setLobbyId(currentItemSelected.getId());
 		    			ViewManager.getInstance().changeView(ViewManager.LOBBY_PLAYER, currentItemSelected);
 		    		} catch (SQLException e) {
 		    			AlertHelper.showWarningMessage("Error", 

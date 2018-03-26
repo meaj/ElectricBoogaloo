@@ -47,10 +47,11 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 			try {
 				Thread.sleep(1000);
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
-				users = lobbyGateway.getUsersByLobbyId(lobby);
+				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 				/*
 				 * if(user.getRole != null) {
 				 * 		ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
+				 * 		user.setLobbyId(lobby.getId());
 				 * 		break;
 				 * }
 				 * 
