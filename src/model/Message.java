@@ -14,7 +14,7 @@ public class Message {
 		id = -1;
 		lobbyid = new SimpleIntegerProperty();
 		message = new SimpleStringProperty();
-		lobbyid = new SimpleIntegerProperty();
+		senduserid = new SimpleIntegerProperty();
 	}
 	
 	public Message(int id, int lobbyid, String message, int senduserid){

@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import model.UserGateway;
+import model.MessageGateway;
 import model.User;
 
 public class ViewManager {
@@ -75,7 +76,7 @@ public class ViewManager {
 					break;
 				case RUNNING_GAME:
 					fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
-					controller = new RunningGameController(user);
+					controller = new RunningGameController(user, new MessageGateway(connection));
 					break;
 				case LOBBY_HOST:
 					fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
