@@ -31,14 +31,16 @@ public class RunningGameController implements Initializable, GeneralController {
 	
 	@FXML void onEnter(ActionEvent ae){
 		try {
-		Message m = new Message();
-		m.setMessage(chatTextField.getText());
-		m.setLobbyId(1);
-		m.setSendUserId(ViewManager.getInstance().getUser().getId());
-		gateway.insert(m);
-		chatLog.add(ViewManager.getInstance().getUser().getUsername() +" : "+m.getMessage());
-		chatTextField.clear();
-		chatListView.setItems(chatLog);
+			if(!chatTextField.getText().equals("")) {
+				Message m = new Message();
+				m.setMessage(chatTextField.getText());
+				m.setLobbyId(1);
+				m.setSendUserId(ViewManager.getInstance().getUser().getId());
+				gateway.insert(m);
+				chatLog.add(ViewManager.getInstance().getUser().getUsername() +" : "+m.getMessage());
+				chatTextField.clear();
+				chatListView.setItems(chatLog);
+			}
 		}
 		catch(SQLException e){
 			e.printStackTrace();
