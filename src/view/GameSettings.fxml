@@ -24,8 +24,8 @@
             <Label layoutX="398.0" layoutY="140.0" text="Villagers" />
             <Label layoutX="396.0" layoutY="169.0" text="Detective" />
             <TextField fx:id="detectiveTextField" layoutX="461.0" layoutY="165.0" prefHeight="22.0" prefWidth="33.0" />
-            <TextField fx:id="doctorTextField" layoutX="461.0" layoutY="193.0" prefHeight="22.0" prefWidth="33.0" />
-            <Label layoutX="396.0" layoutY="197.0" text="Doctor" />
+            <TextField fx:id="priestTextField" layoutX="461.0" layoutY="193.0" prefHeight="22.0" prefWidth="33.0" />
+            <Label layoutX="396.0" layoutY="197.0" text="Priest" />
             <Label layoutX="396.0" layoutY="229.0" text="Vampires" />
             <TextField fx:id="vampireTextField" layoutX="461.0" layoutY="225.0" prefHeight="22.0" prefWidth="33.0" />
          </children>
