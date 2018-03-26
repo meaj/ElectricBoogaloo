@@ -50,7 +50,8 @@ public class GameSettingsController implements Initializable, GeneralController 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		maxPlayers.setValue(totalPlayers);
+		
+		maxPlayers.setValue(8);
 		
 	}
 
