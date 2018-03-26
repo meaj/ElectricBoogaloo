@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +17,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import model.Lobby;
 import model.LobbyGateway;
+import model.Role;
+import model.RoleGateway;
 import model.User;
 import model.UserGateway;
 import utility.AlertHelper;
@@ -27,13 +30,23 @@ public class MatchPageController extends SettingsController implements Initializ
 	private ObservableList<Lobby> lobbies;
 	private LobbyGateway lobbyGate;
 	private UserGateway userGate;
+	private RoleGateway rGate;
 	private User user;
 	private Thread thread;
+	private boolean detectiveFilter;
+	private boolean villagerFilter;
+	private boolean priestFilter;
+	private int playersFilter;
 	
-	public MatchPageController(User user, LobbyGateway lobbyGate, UserGateway userGate) {
+	public MatchPageController(User user, LobbyGateway lobbyGate, UserGateway userGate, RoleGateway roleGate) {
 		this.lobbyGate = lobbyGate;
 		this.userGate = userGate;
 		this.user = user;
+		rGate=roleGate;
+		detectiveFilter=detective;
+		villagerFilter=villager;
+		priestFilter=priest;
+		playersFilter=0;
 		getLobbies();
 		this.start();
 	}
@@ -44,7 +57,11 @@ public class MatchPageController extends SettingsController implements Initializ
 	
 
 	@FXML private void MatchSearchClicked(ActionEvent event) throws IOException {
-		//Should check database for available matches and search based on filters
+		//Sets the filters
+		detectiveFilter=detective;
+		villagerFilter=villager;
+		priestFilter=priest;
+		playersFilter=super.getMaxPlayers();
 	}
 	
 	public void run() {
@@ -99,7 +116,37 @@ public class MatchPageController extends SettingsController implements Initializ
 	}
 
 	public void updateListView() {
-		matchNameList.setItems(lobbies);
+		ObservableList<Lobby> filteredList = FXCollections.observableArrayList();
+		for (Lobby l : lobbies) {
+			ObservableList<Role> roleList = FXCollections.observableArrayList();
+			try {
+				roleList=rGate.getRoles(l.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if((l.getMaxPlayers()==playersFilter||playersFilter==0)) {
+				boolean noDetective=true;
+				boolean noPriest=true;
+				boolean noVillager=true;
+				for(Role r: roleList) {
+					switch(r.getRole()) {
+					case "Detective":
+						noDetective=false;
+						break;
+					case "Priest":
+						noPriest=false;
+						break;
+					case "Villager":
+						noVillager=false;
+						break;
+					}
+				}
+				if(((noDetective&&detectiveFilter)||!detectiveFilter)&&((noPriest&&priestFilter)||!priestFilter)&&((noVillager&&villagerFilter)||!villagerFilter)) {
+					filteredList.add(l);
+				}
+			}
+		}
+		matchNameList.setItems(filteredList);
 		matchNameList.setCellFactory(lv -> new ListCell<Lobby>() {
 			@Override
 			public void updateItem(Lobby item, boolean empty) {
@@ -113,6 +160,7 @@ public class MatchPageController extends SettingsController implements Initializ
 			}
 		});
 	}
+	
 	
 	public void getLobbies() {
 		try {
