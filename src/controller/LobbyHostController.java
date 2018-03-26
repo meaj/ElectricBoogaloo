@@ -38,13 +38,6 @@ public class LobbyHostController implements Initializable, GeneralController {
 		}
 	}
 	
-	@FXML private void settingsButtonClicked(){
-		try {
-			ViewManager.getInstance().changeView(ViewManager.GAME_SETTINGS, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
