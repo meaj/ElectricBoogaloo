@@ -32,57 +32,50 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void onEnter(ActionEvent ae){
-		try {
 		if(!chatTextField.getText().equals("")) {
-				Message m = new Message();
-				m.setMessage(chatTextField.getText());
-				m.setLobbyId(1);
-				m.setSendUser(ViewManager.getInstance().getUser().getUsername());
+			Message m = new Message();
+			m.setMessage(chatTextField.getText());
+			m.setLobbyId(1);
+			m.setSendUser(ViewManager.getInstance().getUser().getUsername());
+			try {
 				gateway.insert(m);
 				chatLog = gateway.getMessages();
 				chatTextField.clear();
 				chatListView.setItems(chatLog);
+			} catch (SQLException e) {
+				System.out.println("Failed to update chatlog");
+				e.printStackTrace();
 			}
-		}
-		catch(SQLException e){
-			e.printStackTrace();
 		}
 	}
 	
 	public void run() {
-	   
-	   while(true){
-	      try {
-	    	Thread.sleep(1000);
-			chatLog = gateway.getMessages();
-		  }catch (SQLException e) {
-			e.printStackTrace();
-		  }catch (InterruptedException e) {
-			e.printStackTrace();
-		  }
-	      Platform.runLater(new Runnable() {
-              @Override public void run() {
-            	  chatListView.setItems(chatLog);
-              }
-          });
-	      
-	    }
-	     
-
-	   }
-	   
-	 public void start () {
-	      if (thread == null) {
-	         thread = new Thread (this);
-	         thread.start ();
-	      }
-	   }
+		while(true){
+			try {
+				Thread.sleep(1000);
+				chatLog = gateway.getMessages();
+			} catch (Exception e) {
+				  e.printStackTrace();
+			}
+			Platform.runLater(new Runnable() {
+				@Override public void run() {
+					chatListView.setItems(chatLog);
+				}
+			});
+		}
+	}
 	
-	
+	public void start () {
+		 if (thread == null) {
+			 thread = new Thread (this);
+			 thread.setDaemon(true);
+			 thread.start ();
+		 }
+	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		chatListView.setItems(chatLog);
-		}
 	}
+}
 

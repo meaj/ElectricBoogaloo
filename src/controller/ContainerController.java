@@ -32,28 +32,19 @@ public class ContainerController implements Initializable {
 		menuItemRules.setDisable(false);
 	}
 	
-	@FXML private void HomeClicked(ActionEvent event) throws IOException {
+	@FXML private void HomeClicked(ActionEvent event) {
 		
 	}
 	
 	@FXML private void MatchesClicked(ActionEvent event) throws IOException {
-		try {
-			ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
 	}
 	
-	@FXML private void RulesClicked(ActionEvent event) throws IOException {
-		try {
-			ViewManager.getInstance().changeView(ViewManager.RULES, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	@FXML private void RulesClicked(ActionEvent event) {
+		ViewManager.getInstance().changeView(ViewManager.RULES, null);
 	}
 	
-	@FXML private void ExitClicked(ActionEvent event) throws IOException {
+	@FXML private void ExitClicked(ActionEvent event) {
         int warningButton=JOptionPane.showConfirmDialog (null, "Are you sure you would like to exit?","Warning",JOptionPane.OK_CANCEL_OPTION);
         if(warningButton == JOptionPane.OK_OPTION){
            System.exit(0);

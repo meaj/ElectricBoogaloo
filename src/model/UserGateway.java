@@ -100,4 +100,20 @@ private Connection conn;
 			}
 		}
 	}
+	
+	public void updateUserLobby(User user, Lobby lobby) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE User Set lobbyid = ? WHERE id = ?");
+			st.setInt(1, lobby.getId());
+			st.setInt(2, user.getId());
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
 }

@@ -1,5 +1,6 @@
 package utility;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 
@@ -16,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import model.UserGateway;
+import model.LobbyGateway;
 import model.MessageGateway;
 import model.User;
 
@@ -61,49 +63,50 @@ public class ViewManager {
 	public User getUser(){
 		return user;
 	}
-	public void changeView(int viewType, Object arg) throws Exception{
-		try {
-			GeneralController controller = null;
-			URL fxmlFile = null;
-			switch(viewType) {
-				case LOGIN:
-					fxmlFile = this.getClass().getResource("../view/Login.fxml");
-					controller = new LoginController(container, new UserGateway(connection));
-					break;
-				case MATCH_PAGE:
-					fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
-					controller = new MatchPageController();
-					break;
-				case RUNNING_GAME:
-					fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
-					controller = new RunningGameController(user, new MessageGateway(connection));
-					break;
-				case LOBBY_HOST:
-					fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
-					controller = new LobbyHostController(user);
-					break;
-				case LOBBY_PLAYER:
-					fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");
-					controller = new LobbyPlayerController();
-					break;
-				case GAME_SETTINGS:
-					fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
-					controller = new GameSettingsController(user);
-					break;
-				case RULES:
-					fxmlFile = this.getClass().getResource("../view/RulesView.fxml");
-					controller = new RulesController();
-					break;
-			}
-		
-			FXMLLoader loader = new FXMLLoader(fxmlFile);
-			loader.setController(controller);
-		
-			Parent viewNode = loader.load();
-			rootNode.setCenter(viewNode);
-		} catch (Exception e) {
-			throw new Exception(e);
+	public void changeView(int viewType, Object arg) {
+		GeneralController controller = null;
+		URL fxmlFile = null;
+		switch(viewType) {
+			case LOGIN:
+				fxmlFile = this.getClass().getResource("../view/Login.fxml");
+				controller = new LoginController(container, new UserGateway(connection));
+				break;
+			case MATCH_PAGE:
+				fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
+				controller = new MatchPageController(user, new LobbyGateway(connection), new UserGateway(connection));
+				break;
+			case RUNNING_GAME:
+				fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
+				controller = new RunningGameController(user, new MessageGateway(connection));
+				break;
+			case LOBBY_HOST:
+				fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
+				controller = new LobbyHostController(arg, new MessageGateway(connection), new LobbyGateway(connection));
+				break;
+			case LOBBY_PLAYER:
+				fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");
+				controller = new LobbyPlayerController(arg, new MessageGateway(connection), new LobbyGateway(connection));
+				break;
+			case GAME_SETTINGS:
+				fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
+				controller = new GameSettingsController(user, new LobbyGateway(connection), new UserGateway(connection));
+				break;
+			case RULES:
+				fxmlFile = this.getClass().getResource("../view/RulesView.fxml");
+				controller = new RulesController();
+				break;
 		}
+		FXMLLoader loader = new FXMLLoader(fxmlFile);
+		loader.setController(controller);
+		Parent viewNode;
+		try {
+			viewNode = loader.load();
+			rootNode.setCenter(viewNode);
+		} catch (IOException e) {
+			System.out.println("Failed to load views to view number " + viewType);
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void setConnection(Connection con) {
