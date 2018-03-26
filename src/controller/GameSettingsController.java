@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.swing.JOptionPane;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +32,7 @@ public class GameSettingsController implements Initializable, GeneralController 
 	private int totalPlayers =8;
 	private int numVillagers, numDetectives, numDoctors, numVampires;
 	private String error;
+
 	
 	@FXML private void saveButtonClicked(ActionEvent event) throws IOException {
 		try {
@@ -81,5 +80,7 @@ public class GameSettingsController implements Initializable, GeneralController 
 		vampireTextField.setText("0");
 		
 	}
+	
 
+	
 }

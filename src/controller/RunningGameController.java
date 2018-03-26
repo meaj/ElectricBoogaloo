@@ -16,17 +16,18 @@ import model.MessageGateway;
 import model.User;
 import utility.ViewManager;
 
-public class RunningGameController implements Initializable, GeneralController {
+public class RunningGameController extends Thread implements Initializable, GeneralController {
 
 	@FXML private TextField chatTextField;
 	@FXML private ListView<Message> chatListView;
 	@FXML private ObservableList<Message> chatLog; 
 	
 	private MessageGateway gateway;
-	
+	private Thread thread;
 	public RunningGameController(User user, MessageGateway gate){
 		chatLog = FXCollections.observableArrayList();
 		this.gateway = gate;
+		this.start();
 	}
 	
 	@FXML void onEnter(ActionEvent ae){
@@ -46,6 +47,30 @@ public class RunningGameController implements Initializable, GeneralController {
 			e.printStackTrace();
 		}
 	}
+	
+	public void run() {
+	   
+	   while(true){
+	      try {
+	    	Thread.sleep(1000);
+			chatLog = gateway.getMessages();
+		  }catch (SQLException e) {
+			e.printStackTrace();
+		  }catch (InterruptedException e) {
+			e.printStackTrace();
+		  }
+	      chatListView.setItems(chatLog);
+	    }
+	     
+
+	   }
+	   
+	 public void start () {
+	      if (thread == null) {
+	         thread = new Thread (this);
+	         thread.start ();
+	      }
+	   }
 	
 	
 	
