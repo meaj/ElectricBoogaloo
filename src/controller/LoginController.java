@@ -37,6 +37,7 @@ public class LoginController implements Initializable, GeneralController {
 			if(gateway.findUser(user.getUsername())){
 				if(gateway.authenticateUser(user)){
 					parent.activateMenuProperties();
+					ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
 				}else{
 					AlertHelper.showWarningMessage("Error", 
 							"Incorrect password", 
@@ -62,6 +63,7 @@ public class LoginController implements Initializable, GeneralController {
 				AlertHelper.showWarningMessage("Error", 
 						"Username is already in use", 
 						"Please enter a new Username and try again");
+				return;
 			} else{
 				gateway.insert(user);
 				System.out.println("Added "+user.getUsername()+" to table");
@@ -71,6 +73,7 @@ public class LoginController implements Initializable, GeneralController {
 		}
 		parent.activateMenuProperties();
 		ViewManager.getInstance().setUser(user);
+		ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
 	}
 	
 	@Override
