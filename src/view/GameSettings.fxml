@@ -17,13 +17,17 @@
             </Label>
             <Label layoutX="115.0" layoutY="118.0" text="Maximum Players:" />
             <Button fx:id="saveSettingsButton" layoutX="259.0" layoutY="295.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save Settings" />
-            <CheckBox fx:id="allowedDetective" layoutX="407.0" layoutY="139.0" mnemonicParsing="false" text="Detective" />
-            <CheckBox fx:id="allowedVillager" layoutX="406.0" layoutY="206.0" mnemonicParsing="false" text="Villager" />
-            <CheckBox fx:id="allowedPolice" layoutX="406.0" layoutY="182.0" mnemonicParsing="false" text="Police" />
             <Label layoutX="398.0" layoutY="118.0" text="Allowed Roles:" />
-            <CheckBox fx:id="allowedMafia" layoutX="407.0" layoutY="161.0" mnemonicParsing="false" text="Mafia" />
             <Label layoutX="113.0" layoutY="190.0" text="Match Name:" />
-            <TextField fx:id="nameTextField" layoutX="111.0" layoutY="214.0" promptText="Match Name" />
+            <TextField fx:id="matchNameVal" layoutX="111.0" layoutY="214.0" promptText="Match Name" />
+            <TextField fx:id="villagersTextField" layoutX="461.0" layoutY="136.0" prefHeight="22.0" prefWidth="33.0" />
+            <Label layoutX="398.0" layoutY="140.0" text="Villagers" />
+            <Label layoutX="396.0" layoutY="169.0" text="Detective" />
+            <TextField fx:id="detectiveTextField" layoutX="461.0" layoutY="165.0" prefHeight="22.0" prefWidth="33.0" />
+            <TextField fx:id="doctorTextField" layoutX="461.0" layoutY="193.0" prefHeight="22.0" prefWidth="33.0" />
+            <Label layoutX="396.0" layoutY="197.0" text="Doctor" />
+            <Label layoutX="396.0" layoutY="229.0" text="Vampires" />
+            <TextField fx:id="vampireTextField" layoutX="461.0" layoutY="225.0" prefHeight="22.0" prefWidth="33.0" />
          </children>
       </AnchorPane>
    </children>
