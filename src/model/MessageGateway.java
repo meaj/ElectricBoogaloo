@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class MessageGateway {
 private Connection conn;
 	
@@ -18,7 +21,7 @@ private Connection conn;
 										+ "VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setInt(1, message.getLobbyId());
 			st.setString(2, message.getMessage());
-			st.setInt(3, message.getSendUserId());
+			st.setString(3, message.getSendUser());
 			st.execute();
 			ResultSet rs = st.getGeneratedKeys();
 			if(rs.next()) {
@@ -35,6 +38,36 @@ private Connection conn;
 				throw e;
 			}
 		}
+	}
+	
+	public ObservableList<Message> getMessages() throws SQLException {
+		ObservableList<Message> messages = FXCollections.observableArrayList();
+		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT * from Chatlog order by id");
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				Message message = new Message(-1, rs.getInt("lobbyid")
+										, rs.getString("message")
+										, rs.getString("senduser"));
+				message.setId(rs.getInt("id"));
+				messages.add(message);
+			}
+		} catch(SQLException e){
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+					if(st != null) {
+					st.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		} 
+		return messages;
 	}
 
 }

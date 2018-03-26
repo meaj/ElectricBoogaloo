@@ -19,8 +19,8 @@ import utility.ViewManager;
 public class RunningGameController implements Initializable, GeneralController {
 
 	@FXML private TextField chatTextField;
-	@FXML private ListView<String> chatListView;
-	@FXML private ObservableList<String> chatLog; 
+	@FXML private ListView<Message> chatListView;
+	@FXML private ObservableList<Message> chatLog; 
 	
 	private MessageGateway gateway;
 	
@@ -31,16 +31,14 @@ public class RunningGameController implements Initializable, GeneralController {
 	
 	@FXML void onEnter(ActionEvent ae){
 		try {
-			if(!chatTextField.getText().equals("")) {
-				Message m = new Message();
-				m.setMessage(chatTextField.getText());
-				m.setLobbyId(1);
-				m.setSendUserId(ViewManager.getInstance().getUser().getId());
-				gateway.insert(m);
-				chatLog.add(ViewManager.getInstance().getUser().getUsername() +" : "+m.getMessage());
-				chatTextField.clear();
-				chatListView.setItems(chatLog);
-			}
+		Message m = new Message();
+		m.setMessage(chatTextField.getText());
+		m.setLobbyId(1);
+		m.setSendUser(ViewManager.getInstance().getUser().getUsername());
+		gateway.insert(m);
+		chatLog = gateway.getMessages();
+		chatTextField.clear();
+		
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -51,6 +49,7 @@ public class RunningGameController implements Initializable, GeneralController {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		chatListView.setItems(chatLog);
 		}
 	}
 
