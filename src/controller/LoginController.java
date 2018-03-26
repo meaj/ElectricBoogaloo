@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
 import model.UserGateway;
+import utility.AlertHelper;
 import utility.ViewManager;
 
 public class LoginController implements Initializable, GeneralController {
@@ -34,28 +35,41 @@ public class LoginController implements Initializable, GeneralController {
 		user.setPassword(loginPassword.getText());
 		try{
 			if(gateway.findUser(user.getUsername())){
-				System.out.println("USER IS IN THE TABLE MY GUY!");
 				if(gateway.authenticateUser(user)){
-					System.out.println("SUCCESSFULLY LOGGED IN!");
 					ViewManager.getInstance().setUser(user);
 					parent.activateMenuProperties();
 				}else{
-					System.out.println("WRONG PASSWORD MY DUDE!");
+					AlertHelper.showWarningMessage("Error", 
+							"Incorrect password", 
+							"Please enter the correct password and try again");
 				}
 			} else{
-				System.out.println("USER IS NOT IN THE TABLE MY GUY!");
+				AlertHelper.showWarningMessage("Error", 
+						"Username is not signed up", 
+						"Please sign up below and try again");
 			}
 		} catch(SQLException e){
 				e.printStackTrace();
 		}
-
-		//System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
 	}
 	
 	@FXML void SignUpClicked(){
 		user.setUsername(signupUsername.getText());
 		user.setPassword(signupPassword.getText());
-		System.out.println(user.getUsername() + " logged in with password: " + user.getPassword());
+		if(user.getUsername().equals(""))
+			return;
+		try{
+			if(gateway.findUser(user.getUsername())){
+				AlertHelper.showWarningMessage("Error", 
+						"Username is already in use", 
+						"Please enter a new Username and try again");
+			} else{
+				gateway.insert(user);
+				System.out.println("Added "+user.getUsername()+" to table");
+			}
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
 		parent.activateMenuProperties();
 		ViewManager.getInstance().setUser(user);
 	}
