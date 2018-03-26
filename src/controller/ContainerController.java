@@ -34,7 +34,6 @@ public class ContainerController implements Initializable {
 	
 	@FXML private void HomeClicked(ActionEvent event) throws IOException {
 		
-
 	}
 	
 	@FXML private void MatchesClicked(ActionEvent event) throws IOException {

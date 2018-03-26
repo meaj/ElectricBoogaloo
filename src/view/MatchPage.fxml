@@ -37,7 +37,7 @@
             <Label layoutX="178.0" layoutY="39.0" text="Allowed Roles:" />
             <CheckBox fx:id="allowedMafia" layoutX="187.0" layoutY="82.0" mnemonicParsing="false" onAction="#setCheckBox" text="Mafia" />
             <Label layoutX="22.0" layoutY="111.0" text="Match Name:" />
-            <TextField fx:id="matchNameVal" layoutX="20.0" layoutY="135.0" promptText="Match Name" />
+            <TextField fx:id="nameTextField" layoutX="20.0" layoutY="135.0" promptText="Match Name" />
          </children>
       </AnchorPane>
    </items>
