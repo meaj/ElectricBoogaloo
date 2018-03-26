@@ -45,7 +45,7 @@ private Connection conn;
 		
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("SELECT * from author order by id");
+			st = conn.prepareStatement("SELECT * from Chatlog order by id");
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
 				Message message = new Message(-1, rs.getInt("lobbyid")
