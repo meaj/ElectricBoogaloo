@@ -23,7 +23,7 @@ public class MatchPageController implements Initializable, GeneralController {
 	
 	@FXML private void CreateMatchClicked(ActionEvent event) throws IOException {
 		try {
-			ViewManager.getInstance().changeView(ViewManager.LOBBY_HOST, null);
+			ViewManager.getInstance().changeView(ViewManager.GAME_SETTINGS, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

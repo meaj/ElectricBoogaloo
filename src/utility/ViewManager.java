@@ -87,7 +87,7 @@ public class ViewManager {
 					break;
 				case GAME_SETTINGS:
 					fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
-					controller = new GameSettingsController();
+					controller = new GameSettingsController(user);
 					break;
 				case RULES:
 					fxmlFile = this.getClass().getResource("../view/RulesView.fxml");

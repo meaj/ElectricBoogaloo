@@ -30,7 +30,7 @@ public class LobbyHostController implements Initializable, GeneralController {
 		chatLog = FXCollections.observableArrayList();
 	}
 
-	@FXML private void startGameButtonClicked(){
+	@FXML private void startGameButtonClicked() {
 		try {
 			ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, null);
 		} catch (Exception e) {
@@ -44,10 +44,6 @@ public class LobbyHostController implements Initializable, GeneralController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	@FXML private void handleMouseClicked() {
-		
 	}
 	
 	@Override

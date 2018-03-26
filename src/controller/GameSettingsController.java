@@ -6,10 +6,16 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import model.User;
 import utility.ViewManager;
 
 public class GameSettingsController implements Initializable, GeneralController {
 
+	private User user;
+	
+	public GameSettingsController(User user) {
+		this.user = user;
+	}
 
 	@FXML private Button saveSettingsButton;
 	
