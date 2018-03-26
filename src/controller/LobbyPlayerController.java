@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import model.Lobby;
@@ -26,6 +27,7 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 	@FXML private Button startGameButton;
 	@FXML private ListView<Message> pregameChatListView;
 	@FXML private ListView<User> playerListView;
+	@FXML private Label playersLabel;
 	
 	private ObservableList<Message> chatLog;
 	private ObservableList<User> users;
@@ -33,7 +35,7 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 	private LobbyGateway lobbyGateway;
 	private Thread thread;
 	private Lobby lobby;
-	
+
 	public LobbyPlayerController(Object lobby, MessageGateway messageGate, LobbyGateway lobbyGate){
 		this.lobby = (Lobby) lobby;
 		this.messageGateway = messageGate;
@@ -63,6 +65,7 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 				@Override public void run() {
 					pregameChatListView.setItems(chatLog);
 					playerListView.setItems(users);
+					playersLabel.setText("Players: " + users.size() + "/" + lobby.getMaxPlayers());
 				}
 			});
 		}
@@ -77,7 +80,18 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void readyUpButtonClicked() {
-		//Update the server when the ready button is clicked
+		User user = ViewManager.getInstance().getUser();
+		try {
+			if(user.getReady() == false) {
+				user.setReady(true);
+				lobbyGateway.updateReadyCount(lobby.getId(), 1);
+			} else {
+				user.setReady(false);
+				lobbyGateway.updateReadyCount(lobby.getId(), -1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML void onEnter(ActionEvent ae){

@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import model.UserGateway;
 import model.LobbyGateway;
 import model.MessageGateway;
+import model.RoleGateway;
 import model.User;
 
 public class ViewManager {
@@ -89,7 +90,7 @@ public class ViewManager {
 				break;
 			case GAME_SETTINGS:
 				fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
-				controller = new GameSettingsController(user, new LobbyGateway(connection), new UserGateway(connection));
+				controller = new GameSettingsController(user, new LobbyGateway(connection), new UserGateway(connection), new RoleGateway(connection));
 				break;
 			case RULES:
 				fxmlFile = this.getClass().getResource("../view/RulesView.fxml");

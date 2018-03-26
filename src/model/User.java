@@ -8,6 +8,7 @@ public class User {
 	private SimpleStringProperty username;
 	private SimpleStringProperty password;
 	private int lobbyid;
+	private boolean ready = false;
 	
 	public User() {
 		id = -1;
@@ -58,4 +59,11 @@ public class User {
 		this.password.set(password);
 	}
 
+	public boolean getReady() {
+		return this.ready;
+	}
+	
+	public void setReady(boolean ready) {
+		this.ready = ready;
+	}
 }

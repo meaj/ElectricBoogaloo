@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import model.Lobby;
@@ -26,6 +27,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 	@FXML private Button startGameButton;
 	@FXML private ListView<Message> pregameChatListView;
 	@FXML private ListView<User> playerListView;
+	@FXML private Label playersLabel;
 	
 	private ObservableList<Message> chatLog;
 	private ObservableList<User> users;
@@ -56,6 +58,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 				@Override public void run() {
 					pregameChatListView.setItems(chatLog);
 					playerListView.setItems(users);
+					playersLabel.setText("Players: " + users.size() + "/" + lobby.getMaxPlayers());
 				}
 			});
 		}

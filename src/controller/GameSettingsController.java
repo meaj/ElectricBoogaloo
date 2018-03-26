@@ -4,7 +4,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +15,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import model.Lobby;
 import model.LobbyGateway;
+import model.Role;
+import model.RoleGateway;
 import model.User;
 import model.UserGateway;
 import utility.AlertHelper;
@@ -23,11 +27,13 @@ public class GameSettingsController implements Initializable, GeneralController 
 	private User user;
 	private LobbyGateway lobbyGate;
 	private UserGateway userGate;
+	private RoleGateway roleGate;
 	
-	public GameSettingsController(User user, LobbyGateway lobbyGate, UserGateway userGate) {
+	public GameSettingsController(User user, LobbyGateway lobbyGate, UserGateway userGate, RoleGateway roleGate) {
 		this.user = user;
 		this.lobbyGate = lobbyGate;
 		this.userGate = userGate;
+		this.roleGate = roleGate;
 	}
 
 	@FXML private Button saveSettingsButton;
@@ -96,13 +102,46 @@ public class GameSettingsController implements Initializable, GeneralController 
 			this.lobbyGate.insertLobby(lobby);
 			this.userGate.updateUserLobby(user, lobby.getId());
 			user.setLobbyId(lobby.getId());
+			ObservableList<Role> roles = createRoles(lobby);
+			if(roles.size() != maxPlayers.getValue()) {
+				throw new Exception();
+			}
 			ViewManager.getInstance().changeView(ViewManager.LOBBY_HOST, lobby);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			AlertHelper.showWarningMessage("Error", 
 					"Failed to initialize lobby", 
 					"This isn't good :thumbsup:");
 			return;
 		}
+	}
+	
+	private ObservableList<Role> createRoles(Lobby lobby) {
+		ObservableList<Role> roles = FXCollections.observableArrayList();
+		try {
+			for(int i = 0; i < numVillagers; i++) {
+				Role role = new Role("Villager", lobby.getId());
+				roles.add(role);
+				roleGate.insertRole(role);
+			}
+			for(int i = 0; i < numDetectives; i++) {
+				Role role = new Role("Detective", lobby.getId());
+				roles.add(role);
+				roleGate.insertRole(role);
+			}
+			for(int i = 0; i < numPriests; i++) {
+				Role role = new Role("Priest", lobby.getId());
+				roles.add(role);
+				roleGate.insertRole(role);
+			}
+			for(int i = 0; i < numVampires; i++) {
+				Role role = new Role("Vampire", lobby.getId());
+				roles.add(role);
+				roleGate.insertRole(role);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return roles;
 	}
 	
 	private int getSumRoles(){

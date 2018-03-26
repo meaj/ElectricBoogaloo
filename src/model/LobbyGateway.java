@@ -103,4 +103,19 @@ private Connection conn;
 		return lobbies;
 	}
 	
+	public void updateReadyCount(int lobbyId, int value) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE Lobby SET readycount = readycount + ? WHERE id = ?");
+			st.setInt(1, value);
+			st.setInt(2, lobbyId);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
 }

@@ -23,7 +23,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	@FXML private TextField chatTextField;
 	@FXML private ListView<Message> chatListView;
 	@FXML private ObservableList<Message> chatLog; 
-	
 	private MessageGateway gateway;
 	private Thread thread;
 	private Lobby lobby;

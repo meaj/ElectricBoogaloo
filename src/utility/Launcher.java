@@ -4,11 +4,12 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.UpdatableResultSet;
+
 import controller.ContainerController;
 import controller.LoginController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.LobbyGateway;
+import model.RoleGateway;
 import model.User;
 import model.UserGateway;
 
@@ -82,8 +84,14 @@ public class Launcher extends Application {
 					ObservableList<User> users = lobbygate.getUsersByLobbyId(user.getLobbyId());
 					if(users.size() == 0) {
 						lobbygate.delete(user.getLobbyId());
+					} else {
+						if(user.getReady() == true) {
+							lobbygate.updateReadyCount(user.getLobbyId(), -1);
+						}
 					}
 				}
+				RoleGateway roleGate = new RoleGateway(conn);
+				roleGate.updateRemoveUser(user.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
