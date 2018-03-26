@@ -19,17 +19,18 @@ import javafx.scene.input.KeyEvent;
 public class SettingsController extends Thread implements Initializable, GeneralController {
 	
 	@FXML private TextField nameTextField;
-	private boolean detective;
-	private boolean mafia;
-	private boolean villager;
-	private boolean police;
-	private String matchName;
+	protected boolean detective;
+	protected boolean vampire;
+	protected boolean villager;
+	protected boolean priest;
+	protected String matchName;
 	
 	@FXML private ChoiceBox<String> maxPlayers;
 	
 	
 	//returns 0 if there is no max, returns the number of max players otherwise
-	@FXML private int getMaxPlayers() {
+	@FXML
+	protected int getMaxPlayers() {
 		if(maxPlayers.getValue().equals("None")) {
 			return 0;
 		}
@@ -47,10 +48,10 @@ public class SettingsController extends Thread implements Initializable, General
 				detective=!detective;
 				break;
 			case "Mafia":
-				mafia=!mafia;
+				vampire=!vampire;
 				break;
-			case "Police":
-				police=!police;
+			case "Priest":
+				priest=!priest;
 				break;
 			case "Villager":
 				villager=!villager;
@@ -65,9 +66,9 @@ public class SettingsController extends Thread implements Initializable, General
 		maxPlayers.getSelectionModel().selectFirst();
 		matchName="";
 		detective=false;
-		mafia=false;
+		vampire=false;
 		villager=false;
-		police=false;
+		priest=false;
 		
 		nameTextField.setOnKeyPressed(new EventHandler<KeyEvent>(){
 		    @Override

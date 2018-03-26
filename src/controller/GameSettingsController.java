@@ -37,7 +37,7 @@ public class GameSettingsController implements Initializable, GeneralController 
 	@FXML private Button saveSettingsButton;
 	@FXML private TextField villagersTextField;
 	@FXML private TextField detectiveTextField;
-	@FXML private TextField doctorTextField;
+	@FXML private TextField priestTextField;
 	@FXML private TextField vampireTextField;
 	@FXML private ChoiceBox<Integer> maxPlayers;
 	@FXML private TextField matchNameVal;
@@ -145,7 +145,7 @@ public class GameSettingsController implements Initializable, GeneralController 
 	private int getSumRoles(){
 		numVillagers = Integer.parseInt(villagersTextField.getText());
 		numDetectives = Integer.parseInt(detectiveTextField.getText());
-		numPriests = Integer.parseInt(doctorTextField.getText());
+		numPriests = Integer.parseInt(priestTextField.getText());
 		numVampires = Integer.parseInt(vampireTextField.getText());
 		return numVillagers + numDetectives + numPriests + numVampires;
 	}
@@ -156,7 +156,7 @@ public class GameSettingsController implements Initializable, GeneralController 
 		maxPlayers.getSelectionModel().selectLast();
 		villagersTextField.setText("0");
 		detectiveTextField.setText("0");
-		doctorTextField.setText("0");
+		priestTextField.setText("0");
 		vampireTextField.setText("0");
 	}
 	
