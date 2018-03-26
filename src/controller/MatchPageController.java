@@ -28,12 +28,14 @@ public class MatchPageController extends SettingsController implements Initializ
 	private LobbyGateway lobbyGate;
 	private UserGateway userGate;
 	private User user;
+	private Thread thread;
 	
 	public MatchPageController(User user, LobbyGateway lobbyGate, UserGateway userGate) {
 		this.lobbyGate = lobbyGate;
 		this.userGate = userGate;
 		this.user = user;
 		getLobbies();
+		this.start();
 	}
 	
 	@FXML private void CreateMatchClicked(ActionEvent event) throws IOException {
@@ -45,8 +47,34 @@ public class MatchPageController extends SettingsController implements Initializ
 		//Should check database for available matches and search based on filters
 	}
 	
+	public void run() {
+		while(true){
+			try {
+				Thread.sleep(1000);
+				Platform.runLater(new Runnable() {
+				@Override public void run() {
+					getLobbies();
+					updateListView();
+				}
+			});
+			} catch (Exception e) {
+				  e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	public void start () {
+		 if (thread == null) {
+			 thread = new Thread (this);
+			 thread.setDaemon(true);
+			 thread.start ();
+		 }
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize(location, resources);
 		//Bind the GUI list view to the list data
 		updateListView();
 		//Set the listener for the double click on the lobby

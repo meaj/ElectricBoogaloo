@@ -16,7 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class SettingsController implements Initializable, GeneralController {
+public class SettingsController extends Thread implements Initializable, GeneralController {
 	
 	@FXML private TextField nameTextField;
 	private boolean detective;
