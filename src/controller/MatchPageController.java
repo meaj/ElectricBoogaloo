@@ -47,6 +47,7 @@ public class MatchPageController extends SettingsController implements Initializ
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize(location, resources);
 		//Bind the GUI list view to the list data
 		updateListView();
 		//Set the listener for the double click on the lobby
