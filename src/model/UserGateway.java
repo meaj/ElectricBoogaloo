@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import utility.ViewManager;
+
 public class UserGateway {
 
 private Connection conn;
@@ -47,11 +49,11 @@ private Connection conn;
 		PreparedStatement st = null;
 		User user = new User();
 		try{
-			st = conn.prepareStatement("SELECT password FROM User WHERE username = ?");
+			st = conn.prepareStatement("SELECT * FROM User WHERE username = ?");
 			st.setString(1, toLogin.getUsername());
 			ResultSet rs = st.executeQuery();
 			while(rs.next()){
-				user = new User(-1, "", rs.getString("password"));
+				user = new User(rs.getInt("id"), toLogin.getUsername(), rs.getString("password"));
 			}
 		} catch(SQLException e){
 			e.printStackTrace();
@@ -67,6 +69,7 @@ private Connection conn;
 			}
 		}
 		if(toLogin.getPassword().equals(user.getPassword())){
+			ViewManager.getInstance().setUser(user);
 			return true;
 		} else{
 			return false;

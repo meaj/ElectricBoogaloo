@@ -36,7 +36,6 @@ public class LoginController implements Initializable, GeneralController {
 		try{
 			if(gateway.findUser(user.getUsername())){
 				if(gateway.authenticateUser(user)){
-					ViewManager.getInstance().setUser(user);
 					parent.activateMenuProperties();
 				}else{
 					AlertHelper.showWarningMessage("Error", 
