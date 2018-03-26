@@ -22,7 +22,7 @@
           <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="123.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="chatTextField" alignment="TOP_LEFT" maxWidth="373.0" prefHeight="22.0" prefWidth="373.0" promptText="Pre-game chat" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <TextField fx:id="chatTextField" onAction="#onEnter" alignment="TOP_LEFT" maxWidth="373.0" prefHeight="22.0" prefWidth="373.0" promptText="Pre-game chat" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets left="5.0" top="1.0" />
                </GridPane.margin>
@@ -31,14 +31,14 @@
             <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label fx:id="playersLabel" text="Players : 1/8" />
-                  <ListView fx:id="playerListView" onMouseClicked="#handleMouseClicked" prefHeight="204.0" prefWidth="173.0" />
+                  <ListView fx:id="playerListView" prefHeight="204.0" prefWidth="173.0" />
                </children>
             </FlowPane>
             <ScrollPane fx:id="ScrollView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="354.0">
                      <children>
-                        <ListView fx:id="roleListView" layoutY="-1.0" onMouseClicked="#handleMouseClicked" prefHeight="185.0" prefWidth="351.0" AnchorPane.leftAnchor="0.0" />
+                        <ListView fx:id="roleListView" layoutY="-1.0" prefHeight="185.0" prefWidth="351.0" AnchorPane.leftAnchor="0.0" />
                      </children>
                   </AnchorPane>
               </content>
@@ -51,7 +51,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="225.0" prefWidth="358.0">
                      <children>
-                        <ListView fx:id="pregameChatListView" onMouseClicked="#handleMouseClicked" prefHeight="235.0" prefWidth="368.0">
+                        <ListView fx:id="pregameChatListView" prefHeight="235.0" prefWidth="368.0">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>

@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import model.Lobby;
 import model.Message;
 import model.MessageGateway;
 import model.User;
@@ -25,7 +26,10 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	
 	private MessageGateway gateway;
 	private Thread thread;
-	public RunningGameController(User user, MessageGateway gate){
+	private Lobby lobby;
+	
+	public RunningGameController(Object lobby, User user, MessageGateway gate){
+		this.lobby = (Lobby) lobby;
 		chatLog = FXCollections.observableArrayList();
 		this.gateway = gate;
 		this.start();
@@ -35,11 +39,11 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		if(!chatTextField.getText().equals("")) {
 			Message m = new Message();
 			m.setMessage(chatTextField.getText());
-			m.setLobbyId(1);
+			m.setLobbyId(lobby.getId());
 			m.setSendUser(ViewManager.getInstance().getUser().getUsername());
 			try {
 				gateway.insert(m);
-				chatLog = gateway.getMessages();
+				chatLog = gateway.getMessagesForLobby(lobby.getId());
 				chatTextField.clear();
 				chatListView.setItems(chatLog);
 			} catch (SQLException e) {
@@ -53,7 +57,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		while(true){
 			try {
 				Thread.sleep(1000);
-				chatLog = gateway.getMessages();
+				chatLog = gateway.getMessagesForLobby(lobby.getId());
 			} catch (Exception e) {
 				  e.printStackTrace();
 			}

@@ -40,12 +40,13 @@ private Connection conn;
 		}
 	}
 	
-	public ObservableList<Message> getMessages() throws SQLException {
+	public ObservableList<Message> getMessagesForLobby(int lobbyId) throws SQLException {
 		ObservableList<Message> messages = FXCollections.observableArrayList();
 		
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("SELECT * from Chatlog order by id");
+			st = conn.prepareStatement("SELECT * from Chatlog WHERE lobbyid = ? order by id");
+			st.setInt(1, lobbyId);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
 				Message message = new Message(-1, rs.getInt("lobbyid")

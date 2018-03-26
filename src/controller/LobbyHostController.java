@@ -47,7 +47,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 		while(true){
 			try {
 				Thread.sleep(1000);
-				chatLog = messageGateway.getMessages();
+				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby);
 			} catch (Exception e) {
 				  e.printStackTrace();
@@ -70,18 +70,18 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 	}
 	
 	@FXML private void startGameButtonClicked() {
-		ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, null);
+		ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
 	}
 	
 	@FXML void onEnter(ActionEvent ae){
 		if(!chatTextField.getText().equals("")) {
 			Message m = new Message();
 			m.setMessage(chatTextField.getText());
-			m.setLobbyId(1);
+			m.setLobbyId(lobby.getId());
 			m.setSendUser(ViewManager.getInstance().getUser().getUsername());
 			try {
 				messageGateway.insert(m);
-				chatLog = messageGateway.getMessages();
+				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				chatTextField.clear();
 				pregameChatListView.setItems(chatLog);
 			} catch (SQLException e) {

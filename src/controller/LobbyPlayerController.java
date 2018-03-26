@@ -29,7 +29,6 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 	
 	private ObservableList<Message> chatLog;
 	private ObservableList<User> users;
-	private ObservableList<String> usernames;
 	private MessageGateway messageGateway;
 	private LobbyGateway lobbyGateway;
 	private Thread thread;
@@ -40,7 +39,6 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 		this.messageGateway = messageGate;
 		this.lobbyGateway = lobbyGate;
 		chatLog = FXCollections.observableArrayList();
-		usernames = FXCollections.observableArrayList();
 		this.start();
 	}
 
@@ -48,8 +46,15 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 		while(true){
 			try {
 				Thread.sleep(1000);
-				chatLog = messageGateway.getMessages();
+				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby);
+				/*
+				 * if(user.getRole != null) {
+				 * 		ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
+				 * 		break;
+				 * }
+				 * 
+				 */
 			} catch (Exception e) {
 				  e.printStackTrace();
 			}
@@ -74,19 +79,15 @@ public class LobbyPlayerController extends Thread implements Initializable, Gene
 		//Update the server when the ready button is clicked
 	}
 	
-	@FXML void handleMouseClicked() {
-		//GET RID OF THIS PLEASE
-	}
-	
 	@FXML void onEnter(ActionEvent ae){
 		if(!chatTextField.getText().equals("")) {
 			Message m = new Message();
 			m.setMessage(chatTextField.getText());
-			m.setLobbyId(1);
+			m.setLobbyId(lobby.getId());
 			m.setSendUser(ViewManager.getInstance().getUser().getUsername());
 			try {
 				messageGateway.insert(m);
-				chatLog = messageGateway.getMessages();
+				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				chatTextField.clear();
 				pregameChatListView.setItems(chatLog);
 			} catch (SQLException e) {
