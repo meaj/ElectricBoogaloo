@@ -7,17 +7,57 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="575.0" prefWidth="800.0">
          <children>
-            <Label layoutX="235.0" layoutY="14.0" text="Game Rules">
+            <Label layoutX="204.0" layoutY="14.0" text="Game Rules">
                <font>
-                  <Font size="14.0" />
+                  <Font size="36.0" />
                </font>
             </Label>
-            <Label layoutX="30.0" layoutY="75.0" text="Roles:" />
-            <Label layoutX="45.0" layoutY="103.0" text="Detective:" />
-            <Label layoutX="45.0" layoutY="89.0" text="Villager:" />
-            <Label layoutX="375.0" layoutY="75.0" text="Playing the game" />
+            <Label layoutX="24.0" layoutY="72.0" text="Roles:">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label layoutX="40.0" layoutY="162.0" text="Detective:">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label layoutX="40.0" layoutY="89.0" text="Villager:">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label layoutX="317.0" layoutY="72.0" text="Playing the Game:">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <TextArea editable="false" layoutX="46.0" layoutY="109.0" prefHeight="56.0" prefWidth="254.0" text="Has no special abilities." wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
+            <TextArea editable="false" layoutX="45.0" layoutY="182.0" prefHeight="56.0" prefWidth="254.0" text="Can investigate one person every night to find out their role." wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
+            <TextArea editable="false" layoutX="45.0" layoutY="341.0" prefHeight="56.0" prefWidth="254.0" text="Can choose one person each night to bite and kill." wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
+            <TextArea editable="false" layoutX="45.0" layoutY="265.0" prefHeight="56.0" prefWidth="254.0" text="Can protect one person from the vampire each night." wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
+            <Label layoutX="40.0" layoutY="239.0" text="Priest:">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label layoutX="36.0" layoutY="321.0" text="Vampire:">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <TextArea editable="false" layoutX="317.0" layoutY="110.0" prefHeight="278.0" prefWidth="274.0" text="Every game will have a set number of Villagers, Detectives, Priests, and Vampires. Every day a vote is held between all players to choose a player. If more than half the players vote on a single player, they are hung and killed. If all the Vampires are killed the non Vampire players win. If only Vampires are left, the Vampire players win. Every night the non Villager roles get to take a special action." wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
          </children>
       </AnchorPane>
    </children>
