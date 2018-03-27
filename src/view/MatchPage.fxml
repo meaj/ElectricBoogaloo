@@ -34,7 +34,10 @@
             <CheckBox fx:id="allowedDetective" layoutX="187.0" layoutY="60.0" mnemonicParsing="false" onAction="#setCheckBox" selected="true" text="Detective" />
             <CheckBox fx:id="allowedVillager" layoutX="186.0" layoutY="127.0" mnemonicParsing="false" onAction="#setCheckBox" selected="true" text="Villager" />
             <CheckBox fx:id="allowedPolice" layoutX="186.0" layoutY="103.0" mnemonicParsing="false" onAction="#setCheckBox" selected="true" text="Priest" />
-            <Label layoutX="178.0" layoutY="39.0" text="Allowed Roles:" />
+            <Label layoutX="178.0" layoutY="39.0" text="Allowed Roles:">
+               <tooltip>
+                  <Tooltip text="Is a box is unchecked search will only find games without that role. If the box is checked it will find games with and without that role." />
+               </tooltip></Label>
             <CheckBox fx:id="allowedMafia" layoutX="187.0" layoutY="82.0" mnemonicParsing="false" onAction="#setCheckBox" selected="true" text="Vampire" />
             <Label layoutX="22.0" layoutY="111.0" text="Match Name:" />
             <TextField fx:id="nameTextField" layoutX="20.0" layoutY="135.0" promptText="Match Name" />
