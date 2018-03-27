@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import model.Lobby;
@@ -30,6 +31,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	@FXML private ListView<User> playerList;
 	@FXML private ObservableList<Message> chatLog; 
 	@FXML private Button voteButton;
+	@FXML private Label labelRolesInMatch;
 	private UserGateway userGateway;
 	private MessageGateway messageGateway;
 	private Thread thread;
@@ -184,6 +186,12 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void initialize(URL location, ResourceBundle resources) {
 		chatListView.setItems(chatLog);
 		playerList.setItems(users);
+		try {
+			labelRolesInMatch.setText("Your Role: "+roleGateway.getRoleByUserId(player.getId()));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 
