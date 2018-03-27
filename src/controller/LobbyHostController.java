@@ -44,6 +44,8 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 	private Lobby lobby;
 	private int readyCount;
 	private User user;
+	private boolean starting;
+	private int countdown = 3;
 	
 	public LobbyHostController(Object lobby, MessageGateway messageGate, LobbyGateway lobbyGate, RoleGateway roleGate){
 		this.lobby = (Lobby) lobby;
@@ -53,6 +55,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 		chatLog = FXCollections.observableArrayList();
 		users = FXCollections.observableArrayList();
 		this.user = ViewManager.getInstance().getUser();
+		starting = false;
 		this.start();
 	}
 
@@ -70,6 +73,37 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 			}
 			Platform.runLater(new Runnable() {
 				@Override public void run() {
+					if(readyCount != lobby.getMaxPlayers()) {
+						starting = false;
+						countdown = 3;
+					}
+					if(starting == true && countdown != 0) {
+						if(readyCount == lobby.getMaxPlayers()) {
+							Message m = new Message();
+							m.setMessage("Game starting in " + countdown + "...");
+							m.setLobbyId(lobby.getId());
+							m.setSendUser("Console:");
+							try {
+								messageGateway.insert(m);
+								chatLog = messageGateway.getMessagesForLobby(lobby.getId());
+								chatTextField.clear();
+								pregameChatListView.setItems(chatLog);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							countdown--;
+						}
+					} else if (countdown == 0 && starting == true){
+						assignRoles();
+						try {
+							messageGateway.deleteMessagesForLobby(lobby.getId());
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+						ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
+						thread.interrupt();
+					}
 					pregameChatListView.setItems(chatLog);
 					playerListView.setItems(users);
 					playersLabel.setText("Players: " + users.size() + "/" + lobby.getMaxPlayers());
@@ -88,9 +122,8 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 	
 	@FXML private void startGameButtonClicked() {
 		if(readyCount == lobby.getMaxPlayers()) {
-			assignRoles();
-			thread.interrupt();
-			ViewManager.getInstance().changeView(ViewManager.RUNNING_GAME, lobby);
+			starting = true;
+			
 		} else {
 			AlertHelper.showWarningMessage("Error", 
 					"All players not ready", 
@@ -124,9 +157,6 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 			Random rand = new Random();
 			for(int i = lobby.getMaxPlayers(); i > 0; i--) {
 				int randNum = rand.nextInt(i);
-				System.out.println("Random number " + randNum + " Role array size " + users.size() + " User array size " + users.size());
-				System.out.println("Assigning role " + roles.get(0).getId() + " named " + roles.get(0).getRole() + 
-						" to user" + users.get(randNum).getId() + " named " + users.get(randNum).getUsername());
 				roleGateway.updateRoleForUser(roles.get(0).getId(), users.get(randNum).getId());
 				roles.remove(0);
 				users.remove(randNum);

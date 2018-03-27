@@ -70,5 +70,26 @@ private Connection conn;
 		} 
 		return messages;
 	}
+	
+	public void deleteMessagesForLobby(int lobbyId) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM Chatlog WHERE lobbyid = ?");
+			st.setInt(1, lobbyId);
+			st.execute();
+		} catch(SQLException e){
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+					if(st != null) {
+					st.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		} 
+	}
 
 }
