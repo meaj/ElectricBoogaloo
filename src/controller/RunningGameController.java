@@ -45,6 +45,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private User player;
 	private int turnCount;
 	private boolean newTurn;
+	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
 		this.player = user;
@@ -69,7 +70,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		sendMessage("GameMaster", player.getUsername()+ " has voted to jail " + selected.getUsername());
+		sendMessage("GameMaster", player.getUsername()+ " has voted to kill " + selected.getUsername());
 		voteButton.setDisable(true);
 		for(User user: users){
 			try {
@@ -160,6 +161,12 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		}
 	}
 	
+	public void disableButtons(){
+		voteButton.setDisable(true);
+		readyUpButton.setDisable(true);
+		chatTextField.setDisable(true);
+	}
+	
 	@FXML void readyUpButtonClicked() {
 		try {
 			if(player.getReady() == false) {
@@ -179,6 +186,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void start () {
 		try {
 			this.lobbyGateway.resetReadyCount(this.lobby.getId());
+			this.lobbyGateway.setAliveCount(lobby.getId(), lobby.getMaxPlayers());
+			this.userGateway.updateUserAlive(this.player, this.player.getAlive());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
