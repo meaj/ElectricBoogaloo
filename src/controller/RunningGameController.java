@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -22,6 +23,7 @@ import model.Role;
 import model.RoleGateway;
 import model.User;
 import model.UserGateway;
+import utility.AlertHelper;
 import utility.ViewManager;
 
 public class RunningGameController extends Thread implements Initializable, GeneralController {
@@ -32,6 +34,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	@FXML private ObservableList<Message> chatLog; 
 	@FXML private Button voteButton;
 	@FXML private Label labelRolesInMatch;
+	@FXML private CheckBox readyUpButton;
 	private UserGateway userGateway;
 	private MessageGateway messageGateway;
 	private Thread thread;
@@ -40,6 +43,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private LobbyGateway lobbyGateway;
 	private RoleGateway roleGateway;
 	private User player;
+	private int turnCount;
+	private boolean newTurn;
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
 		this.player = user;
@@ -49,6 +54,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		this.userGateway = usergw;
 		chatLog = FXCollections.observableArrayList();
 		users = FXCollections.observableArrayList();
+		turnCount=1;
+		newTurn=false;
 		this.player.setReady(false);
 		this.start();
 	}
@@ -125,6 +132,16 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			try {
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
+				//change later will need to account for DEATH
+				if(lobbyGateway.getReadyCount(lobby.getId())==lobby.getMaxPlayers()) {
+					Thread.sleep(1000);
+					turnCount++;
+					readyUpButton.setSelected(false);
+					player.setReady(false);
+					lobbyGateway.resetReadyCount(lobby.getId());
+					newTurn=true;
+					System.out.println(turnCount);
+				}
 				Thread.sleep(1000);
 			} catch (Exception e) {
 				  e.printStackTrace();
@@ -132,6 +149,10 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			Platform.runLater(new Runnable() {
 				@Override public void run() {
 					chatListView.setItems(chatLog);
+					if(newTurn) {
+						newTurn=false;
+						AlertHelper.showWarningMessage("New turn alert.","It is now turn "+turnCount+".","");
+					}
 				
 				}
 			});
@@ -156,6 +177,12 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	
 	
 	public void start () {
+		try {
+			this.lobbyGateway.resetReadyCount(this.lobby.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 if (thread == null) {
 			 thread = new Thread (this);
 			 thread.setDaemon(true);
