@@ -126,7 +126,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void specialActionPressed(){
-		
 	}
 	
 	private void setSpecialActionText(){
@@ -153,6 +152,11 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void run() {
 		while(true){
 			try {
+				if(player.getAlive() == 0){
+					disableButtons();
+				}else{
+					player.setAlive(userGateway.getAlive(player.getId()));
+				}
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 				//change later will need to account for DEATH
@@ -165,6 +169,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					newTurn=true;
 					System.out.println(turnCount);
 				}
+				
 				Thread.sleep(1000);
 			} catch (Exception e) {
 				  e.printStackTrace();
@@ -187,6 +192,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		voteButton.setDisable(true);
 		readyUpButton.setDisable(true);
 		chatTextField.setDisable(true);
+		specialActionButton.setDisable(true);
 	}
 	
 	@FXML void readyUpButtonClicked() {
