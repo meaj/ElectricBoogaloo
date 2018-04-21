@@ -15,6 +15,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import model.Lobby;
 import model.LobbyGateway;
 import model.Message;
@@ -125,26 +126,68 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void specialActionPressed(){
-		
+		switch(player.getRole()){
+			case "Vampire":
+				handleVampireAction();
+				break;
+			case "Detective":
+				handleDetectiveAction();
+				break;
+			case "Priest":
+				handlePriestAction();
+				break;
+			case "Villager":
+				handleVillagerAction();
+				break;
+		}
 	}
 	
+	private void handleVillagerAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handlePriestAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleDetectiveAction() {
+		User user = playerList.getSelectionModel().getSelectedItem();
+		if(user != null){
+			
+		}else{
+			AlertHelper.showWarningMessage("Detective.", "No player selected", "Please choose a player from the list of players to investigate");
+		}
+		
+	}
+
+	private void handleVampireAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void setSpecialActionText(){
 		switch(player.getRole()){
 			case "Vampire":
 				specialActionButton.setText("Devour");
 				labelRolesInMatch.setText("Your Role: Vampire");
+				specialActionButton.setTooltip(new Tooltip("Select a player in the lobby to devour"));
 				break;
 			case "Detective":
 				specialActionButton.setText("Investigate");
 				labelRolesInMatch.setText("Your Role: Detective");
+				specialActionButton.setTooltip(new Tooltip("Select a player in the lobby to Investigate"));
 				break;
 			case "Villager":
 				specialActionButton.setText("Panic.");
 				labelRolesInMatch.setText("Your Role: Villager");
+				specialActionButton.setTooltip(new Tooltip("Panic."));
 				break;
 			case "Priest":
 				specialActionButton.setText("Protect");
 				labelRolesInMatch.setText("Your Role: Priest");
+				specialActionButton.setTooltip(new Tooltip("Protect a player of your choosing through the night"));
 				break;
 		}
 	}
