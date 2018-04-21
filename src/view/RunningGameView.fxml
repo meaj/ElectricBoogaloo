@@ -20,7 +20,7 @@
             <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="labelRolesInMatch" prefHeight="16.0" prefWidth="405.0" text="Roles: ">
+            <Label fx:id="labelRolesInMatch" prefHeight="16.0" prefWidth="405.0" text="Your Role:">
                <font>
                   <Font size="13.0" />
                </font>
