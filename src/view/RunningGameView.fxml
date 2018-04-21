@@ -39,6 +39,7 @@
                   <Insets left="30.0" />
                </GridPane.margin>
             </CheckBox>
+            <Button fx:id="SpecialActionButton" mnemonicParsing="false" onAction="#specialActionPressed" text="Special Action" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

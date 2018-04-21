@@ -57,24 +57,13 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		int sum = 0;
 		User highestUser = new User();
 		User selected = playerList.getSelectionModel().getSelectedItem();
-		
 		try {
 			userGateway.voteForUser(selected.getUsername());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
-		Message msg = new Message();
-		msg.setMessage( player.getUsername()+ " has voted to jail " + selected.getUsername() );
-		msg.setLobbyId(lobby.getId());
-		msg.setSendUser("GameMaster");
-		try {
-			messageGateway.insert(msg);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		sendMessage("GameMaster", player.getUsername()+ " has voted to jail " + selected.getUsername());
 		voteButton.setDisable(true);
-
 		for(User user: users){
 			try {
 				sum += userGateway.getNumVotesForUser(user.getUsername());
@@ -82,9 +71,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				e.printStackTrace();
 			}
 		}
-	
 		if(sum == users.size()){
-			
 			int highest = 0;
 			int numVotes = 0;
 			for(User user: users){
@@ -98,8 +85,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					e.printStackTrace();
 				}
 			}
-			
-			msg = new Message();
 			Role role = new Role("Villager", -1);
 			try {
 				role = roleGateway.getRoleByUserId(highestUser.getId());
@@ -107,44 +92,20 @@ public class RunningGameController extends Thread implements Initializable, Gene
 
 				e2.printStackTrace();
 			}
-			msg.setMessage(highestUser.getUsername() + " has been jailed." + " He was the " + role );
-			msg.setLobbyId(lobby.getId());
-			msg.setSendUser("GameMaster");
-			try {
-				messageGateway.insert(msg);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			msg = new Message();
+			sendMessage("GameMaster",highestUser.getUsername() + " has been jailed." + " He was the " + role );
 			if(role.getRole().equals("Vampire")){
-				msg.setMessage("Game Over! Villagers win!" );
+				sendMessage("GameMaster","Game Over! Villagers win!" );
 			}else{
-				msg.setMessage("Game Over! Vampires win!" );
-			}
-			msg.setLobbyId(lobby.getId());
-			msg.setSendUser("GameMaster");
-			
-			try {
-				messageGateway.insert(msg);
-			} catch (SQLException e) {
-				e.printStackTrace();
+				sendMessage("GameMaster","Game Over! Vampires win!" );
 			}
 		}
-		
-		
-		
 	}
 	
 	@FXML void onEnter(ActionEvent ae){
 		if(!chatTextField.getText().equals("")) {
-			Message m = new Message();
-			m.setMessage(chatTextField.getText());
-			m.setLobbyId(lobby.getId());
-			m.setSendUser(ViewManager.getInstance().getUser().getUsername());
+			sendMessage(ViewManager.getInstance().getUser().getUsername(),chatTextField.getText());
 			try {
-				messageGateway.insert(m);
-				chatLog =messageGateway.getMessagesForLobby(lobby.getId());
+				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				chatTextField.clear();
 				chatListView.setItems(chatLog);
 			} catch (SQLException e) {
@@ -153,6 +114,11 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			}
 		}
 	}
+	
+	@FXML void specialActionPressed(){
+		
+	}
+	
 	
 	public void run() {
 		while(true){
@@ -187,7 +153,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		}
 	}
 	
-
+	
 	
 	public void start () {
 		 if (thread == null) {
@@ -204,7 +170,18 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		try {
 			labelRolesInMatch.setText("Your Role: "+roleGateway.getRoleByUserId(player.getId()));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendMessage(String sendUser, String content){
+		Message msg = new Message();
+		msg.setMessage(content);
+		msg.setLobbyId(lobby.getId());
+		msg.setSendUser(sendUser);
+		try {
+			messageGateway.insert(msg);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
