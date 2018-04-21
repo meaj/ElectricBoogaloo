@@ -10,6 +10,7 @@ public class User {
 	private int lobbyid;
 	private boolean ready = false;
 	private String role;
+	private int alive;
 	
 	public User() {
 		id = -1;
@@ -22,6 +23,7 @@ public class User {
 		setId(id);
 		setUsername(username);
 		setPassword(password);
+		alive = 1;
 	}
 	
 	public int getLobbyId() {

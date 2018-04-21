@@ -154,4 +154,55 @@ private Connection conn;
 		}
 		return readyCount;
 	}
+	
+	public void decrementAliveCount(int lobbyId) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE Lobby SET alivecount = alivecount - 1 WHERE id = ?");
+			st.setInt(1,lobbyId);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
+	
+	public void setAliveCount(int lobbyId, int alive) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE Lobby SET alivecount = ? WHERE id = ?");
+			st.setInt(1,alive);
+			st.setInt(2, lobbyId);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
+	
+	public int getAliveCount(int lobbyId) throws SQLException {
+		int aliveCount = 0;
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM Lobby WHERE id = ?");
+			st.setInt(1, lobbyId);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				aliveCount = rs.getInt("alivecount");
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+		return aliveCount;
+	}
 }

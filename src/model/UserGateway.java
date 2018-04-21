@@ -177,4 +177,20 @@ private Connection conn;
 			}
 		}
 	}
+	
+	public void updateUserAlive(User user, int alive) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE User Set alive = ? WHERE id = ?");
+			st.setInt(1, alive);
+			st.setInt(2, user.getId());
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
 }
