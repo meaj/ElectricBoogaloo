@@ -35,6 +35,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	@FXML private Button voteButton;
 	@FXML private Label labelRolesInMatch;
 	@FXML private CheckBox readyUpButton;
+	@FXML private Button specialActionButton;
 	private UserGateway userGateway;
 	private MessageGateway messageGateway;
 	private Thread thread;
@@ -58,6 +59,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		newTurn=false;
 		this.player.setReady(false);
 		this.start();
+		
 	}
 	
 	@FXML void onVoteClicked(){
@@ -126,6 +128,26 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		
 	}
 	
+	private void setSpecialActionText(){
+		switch(player.getRole()){
+			case "Vampire":
+				specialActionButton.setText("Devour");
+				labelRolesInMatch.setText("Your Role: Vampire");
+				break;
+			case "Detective":
+				specialActionButton.setText("Investigate");
+				labelRolesInMatch.setText("Your Role: Detective");
+				break;
+			case "Villager":
+				specialActionButton.setText("Panic.");
+				labelRolesInMatch.setText("Your Role: Villager");
+				break;
+			case "Priest":
+				specialActionButton.setText("Protect");
+				labelRolesInMatch.setText("Your Role: Priest");
+				break;
+		}
+	}
 	
 	public void run() {
 		while(true){
@@ -194,6 +216,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void initialize(URL location, ResourceBundle resources) {
 		chatListView.setItems(chatLog);
 		playerList.setItems(users);
+		setSpecialActionText();
 		try {
 			labelRolesInMatch.setText("Your Role: "+roleGateway.getRoleByUserId(player.getId()));
 		} catch (SQLException e) {
