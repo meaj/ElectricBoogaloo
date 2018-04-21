@@ -127,7 +127,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void specialActionPressed(){
-<<<<<<< HEAD
 		switch(player.getRole()){
 			case "Vampire":
 				handleVampireAction();
@@ -142,8 +141,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				handleVillagerAction();
 				break;
 		}
-=======
->>>>>>> branch 'master' of https://github.com/CHouse013/ElectricBoogaloo.git
+
 	}
 	
 	private void handleVillagerAction() {
