@@ -26,6 +26,14 @@ public class User {
 		alive = 1;
 	}
 	
+	public int getAlive() {
+		return this.alive;
+	}
+	
+	public void setAlive(int alive) {
+		this.alive = alive;
+	}
+	
 	public int getLobbyId() {
 		return this.lobbyid;
 	}

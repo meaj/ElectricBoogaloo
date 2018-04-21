@@ -193,4 +193,24 @@ private Connection conn;
 			}
 		}
 	}
+	
+	public int getAlive(int userId) throws SQLException {
+		int alive = 0;
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM User WHERE id = ?");
+			st.setInt(1, userId);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				alive = rs.getInt("alive");
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+		return alive;
+	}
 }

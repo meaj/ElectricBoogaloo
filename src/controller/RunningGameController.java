@@ -47,6 +47,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private User player;
 	private int turnCount;
 	private boolean newTurn;
+	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
 		this.player = user;
@@ -72,7 +73,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		sendMessage("GameMaster", player.getUsername()+ " has voted to jail " + selected.getUsername());
+		sendMessage("GameMaster", player.getUsername()+ " has voted to kill " + selected.getUsername());
 		voteButton.setDisable(true);
 		for(User user: users){
 			try {
@@ -126,6 +127,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void specialActionPressed(){
+<<<<<<< HEAD
 		switch(player.getRole()){
 			case "Vampire":
 				handleVampireAction();
@@ -140,6 +142,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				handleVillagerAction();
 				break;
 		}
+=======
+>>>>>>> branch 'master' of https://github.com/CHouse013/ElectricBoogaloo.git
 	}
 	
 	private void handleVillagerAction() {
@@ -195,6 +199,11 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void run() {
 		while(true){
 			try {
+				if(player.getAlive() == 0){
+					disableButtons();
+				}else{
+					player.setAlive(userGateway.getAlive(player.getId()));
+				}
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 				//change later will need to account for DEATH
@@ -207,6 +216,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					newTurn=true;
 					System.out.println(turnCount);
 				}
+				
 				Thread.sleep(1000);
 			} catch (Exception e) {
 				  e.printStackTrace();
@@ -223,6 +233,13 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			});
 			
 		}
+	}
+	
+	public void disableButtons(){
+		voteButton.setDisable(true);
+		readyUpButton.setDisable(true);
+		chatTextField.setDisable(true);
+		specialActionButton.setDisable(true);
 	}
 	
 	@FXML void readyUpButtonClicked() {
@@ -244,6 +261,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void start () {
 		try {
 			this.lobbyGateway.resetReadyCount(this.lobby.getId());
+			this.lobbyGateway.setAliveCount(lobby.getId(), lobby.getMaxPlayers());
+			this.userGateway.updateUserAlive(this.player, this.player.getAlive());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
