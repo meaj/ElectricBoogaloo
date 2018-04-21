@@ -49,6 +49,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		this.userGateway = usergw;
 		chatLog = FXCollections.observableArrayList();
 		users = FXCollections.observableArrayList();
+		this.player.setReady(false);
 		this.start();
 	}
 	
@@ -169,6 +170,20 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				}
 			});
 			
+		}
+	}
+	
+	@FXML void readyUpButtonClicked() {
+		try {
+			if(player.getReady() == false) {
+				player.setReady(true);
+				lobbyGateway.updateReadyCount(lobby.getId(), 1);
+			} else {
+				player.setReady(false);
+				lobbyGateway.updateReadyCount(lobby.getId(), -1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
