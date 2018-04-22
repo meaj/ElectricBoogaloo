@@ -241,4 +241,19 @@ private Connection conn;
 		}
 		return finishedCount;
 	}
+	
+	public void incrementFinishedCount(int lobbyId) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE Lobby SET finishedcount = finishedcount + 1 WHERE id = ?");
+			st.setInt(1,lobbyId);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
 }
