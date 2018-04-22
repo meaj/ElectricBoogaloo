@@ -47,6 +47,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private User player;
 	private int turnCount;
 	private boolean newTurn;
+	private int numVampires;
+	private int alivePlayers;
 	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
@@ -59,6 +61,8 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		users = FXCollections.observableArrayList();
 		turnCount=1;
 		newTurn=false;
+		numVampires=0;
+		alivePlayers=this.lobby.getMaxPlayers();
 		this.player.setReady(false);
 		this.start();
 		
@@ -165,7 +169,48 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 
 	private void handleVampireAction() {
-		// TODO Auto-generated method stub
+		int sum = 0;
+		User highestUser = new User();
+		User selected = playerList.getSelectionModel().getSelectedItem();
+		try {
+			userGateway.voteForUser(selected.getUsername());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		specialActionButton.setDisable(true);
+		for(User user: users){
+			try {
+				sum += userGateway.getNumVotesForUser(user.getUsername());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if(sum == numVampires){
+			int highest = 0;
+			int numVotes = 0;
+			for(User user: users){
+				try {
+					numVotes = userGateway.getNumVotesForUser(user.getUsername());
+					if(numVotes > highest){
+						highestUser = user;
+						highest = numVotes;
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			try {
+				userGateway.updateUserAlive(highestUser, 0);
+				alivePlayers--;
+				for(User user: users){
+						userGateway.resetUserVotes(user.getUsername());
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 
@@ -197,22 +242,30 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	public void run() {
 		while(true){
 			try {
-				if(player.getAlive() == 0){
-					disableButtons();
-				}else{
-					player.setAlive(userGateway.getAlive(player.getId()));
-				}
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 				//change later will need to account for DEATH
-				if(lobbyGateway.getReadyCount(lobby.getId())==lobby.getMaxPlayers()) {
-					Thread.sleep(1000);
+				if(lobbyGateway.getReadyCount(lobby.getId())==alivePlayers) {
+					player.setAlive(userGateway.getAlive(player.getId()));
 					turnCount++;
 					readyUpButton.setSelected(false);
 					player.setReady(false);
-					lobbyGateway.resetReadyCount(lobby.getId());
 					newTurn=true;
-					System.out.println(turnCount);
+					if(player.getAlive() == 0){
+						disableButtons();
+					}
+					else if(turnCount%2==0) {
+						this.specialActionButton.setDisable(false);
+						this.chatTextField.setDisable(true);
+						this.voteButton.setDisable(true);
+					}
+					else {
+						this.specialActionButton.setDisable(true);
+						this.chatTextField.setDisable(false);
+						this.voteButton.setDisable(false);
+					}
+					Thread.sleep(2000);
+					lobbyGateway.resetReadyCount(lobby.getId());
 				}
 				
 				Thread.sleep(1000);
@@ -257,13 +310,27 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	
 	
 	public void start () {
+
+
 		try {
 			this.lobbyGateway.resetReadyCount(this.lobby.getId());
 			this.lobbyGateway.setAliveCount(lobby.getId(), lobby.getMaxPlayers());
 			this.userGateway.updateUserAlive(this.player, this.player.getAlive());
+			users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		for(User user : users) {
+			try {
+				
+				Role r=roleGateway.getRoleByUserId(user.getId());
+				if(r.getRole().equals("Vampire")) {
+					numVampires++;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		 if (thread == null) {
 			 thread = new Thread (this);
@@ -282,6 +349,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		this.specialActionButton.setDisable(true);
 	}
 	
 	public void sendMessage(String sendUser, String content){
