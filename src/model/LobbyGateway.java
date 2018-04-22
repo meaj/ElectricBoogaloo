@@ -205,4 +205,40 @@ private Connection conn;
 		}
 		return aliveCount;
 	}
+	
+	public void setFinishedCount(int lobbyId, int finished) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE Lobby SET finishedcount = ? WHERE id = ?");
+			st.setInt(1,finished);
+			st.setInt(2, lobbyId);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
+	
+	public int getFinishedCount(int lobbyId) throws SQLException {
+		int finishedCount = 0;
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM Lobby WHERE id = ?");
+			st.setInt(1, lobbyId);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				finishedCount = rs.getInt("finishedcount");
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+		return finishedCount;
+	}
 }
