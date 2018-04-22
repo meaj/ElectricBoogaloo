@@ -209,7 +209,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			
 			try {
 				userGateway.updateUserAlive(highestUser, 0);
-				alivePlayers--;
 				for(User user: users){
 						userGateway.resetUserVotes(user.getUsername());
 				}
@@ -251,9 +250,16 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			try {
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
-				//change later will need to account for DEATH
 				if(lobbyGateway.getReadyCount(lobby.getId())==alivePlayers) {
+					if(lobbyGateway.getFinishedCount(lobby.getId())==lobby.getMaxPlayers()) {
+						lobbyGateway.setFinishedCount(lobby.getId(), 0);
+					}
+					lobbyGateway.incrementFinishedCount(lobby.getId());
 					player.setAlive(userGateway.getAlive(player.getId()));
+					alivePlayers=0;
+					for(User user : users) {
+						alivePlayers+=userGateway.getAlive(user.getId()); 
+					}
 					turnCount++;
 					readyUpButton.setSelected(false);
 					player.setReady(false);
@@ -271,7 +277,9 @@ public class RunningGameController extends Thread implements Initializable, Gene
 						this.chatTextField.setDisable(false);
 						this.voteButton.setDisable(false);
 					}
-					Thread.sleep(2000);
+					while(lobbyGateway.getFinishedCount(lobby.getId())!=lobby.getMaxPlayers()) {
+						Thread.sleep(1000);
+					}
 					lobbyGateway.resetReadyCount(lobby.getId());
 				}
 				
