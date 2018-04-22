@@ -104,11 +104,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				e2.printStackTrace();
 			}
 			sendMessage("GameMaster",highestUser.getUsername() + " has been jailed." + " He was the " + role );
-			if(role.getRole().equals("Vampire")){
-				sendMessage("GameMaster","Game Over! Villagers win!" );
-			}else{
-				sendMessage("GameMaster","Game Over! Vampires win!" );
-			}
+			
 		}
 	}
 	
@@ -141,6 +137,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				handleVillagerAction();
 				break;
 		}
+		specialActionButton.setDisable(true);
 
 	}
 	
@@ -155,9 +152,19 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 
 	private void handleDetectiveAction() {
-		User user = playerList.getSelectionModel().getSelectedItem();
-		if(user != null){
-			
+		User selectedUser = playerList.getSelectionModel().getSelectedItem();
+		if(selectedUser != null){
+			try {
+				Role selectedRole = roleGateway.getRoleByUserId(selectedUser.getId());
+				System.out.println("Selected User " +selectedUser + " Role " +selectedRole);
+				if(selectedRole.getRole().equals("Vampire")){
+					AlertHelper.showWarningMessage("Detective.", "GUILTY", "After a thorough investigate, you have determined " + selectedUser + " to be a filthy vampire");
+				}else{
+					AlertHelper.showWarningMessage("Detective.", "INNOCENT", "After a thorough investigate, you have determined " + selectedUser + " is an innocent man. Relatively speaking.");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}else{
 			AlertHelper.showWarningMessage("Detective.", "No player selected", "Please choose a player from the list of players to investigate");
 		}
@@ -165,7 +172,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 
 	private void handleVampireAction() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -173,22 +180,22 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		switch(player.getRole()){
 			case "Vampire":
 				specialActionButton.setText("Devour");
-				labelRolesInMatch.setText("Your Role: Vampire");
+				labelRolesInMatch.setText("Player: "+player.getUsername()+" \t\t\tYour Role: Vampire");
 				specialActionButton.setTooltip(new Tooltip("Select a player in the lobby to devour"));
 				break;
 			case "Detective":
 				specialActionButton.setText("Investigate");
-				labelRolesInMatch.setText("Your Role: Detective");
+				labelRolesInMatch.setText("Player: "+player.getUsername()+" \t\t\tYour Role: Detective");
 				specialActionButton.setTooltip(new Tooltip("Select a player in the lobby to Investigate"));
 				break;
 			case "Villager":
 				specialActionButton.setText("Panic.");
-				labelRolesInMatch.setText("Your Role: Villager");
+				labelRolesInMatch.setText("Player: "+player.getUsername()+" \t\t\tYour Role: Villager");
 				specialActionButton.setTooltip(new Tooltip("Panic."));
 				break;
 			case "Priest":
 				specialActionButton.setText("Protect");
-				labelRolesInMatch.setText("Your Role: Priest");
+				labelRolesInMatch.setText("Player: "+player.getUsername()+" \t\t\tYour Role: Priest");
 				specialActionButton.setTooltip(new Tooltip("Protect a player of your choosing through the night"));
 				break;
 		}
@@ -277,11 +284,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		chatListView.setItems(chatLog);
 		playerList.setItems(users);
 		setSpecialActionText();
-		try {
-			labelRolesInMatch.setText("Your Role: "+roleGateway.getRoleByUserId(player.getId()));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void sendMessage(String sendUser, String content){
