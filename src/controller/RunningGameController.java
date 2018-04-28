@@ -49,7 +49,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private boolean newTurn;
 	private int numVampires;
 	private int alivePlayers;
-	private User vampireTarget = null;
 	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
@@ -149,54 +148,14 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 
 	private void handleVampireAction() {
-		int sum = 0;
-		User highestUser = new User();
 		User selected = playerList.getSelectionModel().getSelectedItem();
 		try {
 			userGateway.voteForUser(selected.getUsername());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		specialActionButton.setDisable(true);
-		for(User user: users){
-			try {
-				sum += userGateway.getNumVotesForUser(user.getUsername());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if(sum == numVampires){
-			int highest = 0;
-			int numVotes = 0;
-			for(User user: users){
-				try {
-					numVotes = userGateway.getNumVotesForUser(user.getUsername());
-					if(numVotes > highest){
-						highestUser = user;
-						highest = numVotes;
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			vampireTarget = highestUser;
-		}
 	}
 	
-	private void attemptToKillVampireTarget(){
-		try {
-			if(vampireTarget!=null)
-				if(userGateway.getProtected(vampireTarget.getId())!=1)
-					userGateway.updateUserAlive(vampireTarget, 0);
-			for(User user: users){
-					userGateway.resetUserVotes(user.getUsername());
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		vampireTarget = null;
-	}
-
 	private void setSpecialActionText(){
 		switch(player.getRole()){
 			case "Vampire":
@@ -260,16 +219,20 @@ public class RunningGameController extends Thread implements Initializable, Gene
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}else{
-						if(vampireTarget!=null){
-							attemptToKillVampireTarget();
-							for(User user : users){
-								userGateway.updateUserProtected(user, 0);
+					}
+					else{
+						try {
+							if(userGateway.getProtected(highestUser.getId())!=1) {
+								userGateway.updateUserAlive(highestUser, 0);
 							}
-							vampireTarget = null;
+							for(User user: users){
+									userGateway.resetUserVotes(user.getUsername());
+							}
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
-					lobbyGateway.incrementFinishedCount(lobby.getId());
 					int alive=player.getAlive();
 					player.setAlive(userGateway.getAlive(player.getId()));
 					if(alive!=player.getAlive()) {
@@ -315,8 +278,12 @@ public class RunningGameController extends Thread implements Initializable, Gene
 						this.chatTextField.setDisable(false);
 						this.voteButton.setDisable(false);
 					}
+					lobbyGateway.incrementFinishedCount(lobby.getId());
 					while(lobbyGateway.getFinishedCount(lobby.getId())!=lobby.getMaxPlayers()) {
 						Thread.sleep(1000);
+					}
+					for(User user : users){
+						userGateway.updateUserProtected(user, 0);
 					}
 					
 					lobbyGateway.resetReadyCount(lobby.getId());
