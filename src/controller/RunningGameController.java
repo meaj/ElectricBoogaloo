@@ -189,6 +189,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				chatLog = messageGateway.getMessagesForLobby(lobby.getId());
 				users = lobbyGateway.getUsersByLobbyId(lobby.getId());
 				if(lobbyGateway.getReadyCount(lobby.getId())==alivePlayers) {
+					this.readyUpButton.setDisable(true);
 					if(lobbyGateway.getFinishedCount(lobby.getId())==lobby.getMaxPlayers()) {
 						lobbyGateway.setFinishedCount(lobby.getId(), 0);
 					}
@@ -291,7 +292,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					for(User user : users){
 						userGateway.updateUserProtected(user, 0);
 					}
-					
+					this.readyUpButton.setDisable(true);
 					lobbyGateway.resetReadyCount(lobby.getId());
 				}
 				
