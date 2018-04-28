@@ -355,6 +355,11 @@ public class RunningGameController extends Thread implements Initializable, Gene
 				usergate.updateUserAlive(user, 1);
 				RoleGateway roleGate = new RoleGateway(conn);
 				roleGate.updateRemoveUser(user.getId());
+				turnCount=1;
+				newTurn=false;
+				numVampires=0;
+				alivePlayers=this.lobby.getMaxPlayers();
+				this.player.setReady(false);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
