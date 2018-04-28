@@ -38,7 +38,7 @@ public class Launcher extends Application {
 		BorderPane rootNode = loader.load();
 		
 		Scene scene = new Scene(rootNode, 800, 600);
-		stage.setTitle("Mafia Game my dudes");
+		stage.setTitle("Vampire");
 		stage.setScene(scene);
 		stage.show();
 		
