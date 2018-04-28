@@ -49,6 +49,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private boolean newTurn;
 	private int numVampires;
 	private int alivePlayers;
+	private User vampireTarget;
 	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
@@ -146,13 +147,18 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	private void handleVillagerAction() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	private void handlePriestAction() {
-		// TODO Auto-generated method stub
-		
+		User selectedUser = playerList.getSelectionModel().getSelectedItem();
+		if(selectedUser != null){
+			try {
+				userGateway.updateUserProtected(selectedUser, 1);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void handleDetectiveAction() {
@@ -160,7 +166,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		if(selectedUser != null){
 			try {
 				Role selectedRole = roleGateway.getRoleByUserId(selectedUser.getId());
-				System.out.println("Selected User " +selectedUser + " Role " +selectedRole);
 				if(selectedRole.getRole().equals("Vampire")){
 					AlertHelper.showWarningMessage("Detective.", "GUILTY", "After a thorough investigate, you have determined " + selectedUser + " to be a filthy vampire");
 				}else{
@@ -206,18 +211,32 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					e.printStackTrace();
 				}
 			}
-			
-			try {
-				userGateway.updateUserAlive(highestUser, 0);
-				for(User user: users){
-						userGateway.resetUserVotes(user.getUsername());
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
+	}
+	
+	private void attemptToKillVampireTarget(){
 		
+		try {
+			if(vampireTarget!=null)
+				if(userGateway.getProtected(vampireTarget.getId())!=1)
+					userGateway.updateUserAlive(vampireTarget, 0);
+			for(User user: users){
+					userGateway.resetUserVotes(user.getUsername());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		vampireTarget = null;
+		
+		/*Addto run
+		if(vampireTarget!=null){
+			attemptToKillVampireTarget();
+			for(User user : users){
+				userGateway.updateUserProtected(user, 0);
+			}
+			vampireTarget = null;
+		}*/
+	
 	}
 
 	private void setSpecialActionText(){
