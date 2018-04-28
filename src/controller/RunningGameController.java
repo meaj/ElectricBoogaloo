@@ -49,7 +49,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private boolean newTurn;
 	private int numVampires;
 	private int alivePlayers;
-	private User vampireTarget;
+	private User vampireTarget = null;
 	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
@@ -122,6 +122,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		if(selectedUser != null){
 			try {
 				userGateway.updateUserProtected(selectedUser, 1);
+				AlertHelper.showWarningMessage("Priest", "", selectedUser.getUsername() + " will be protected tonight.");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -178,11 +179,11 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					e.printStackTrace();
 				}
 			}
+			vampireTarget = highestUser;
 		}
 	}
 	
 	private void attemptToKillVampireTarget(){
-		
 		try {
 			if(vampireTarget!=null)
 				if(userGateway.getProtected(vampireTarget.getId())!=1)
@@ -194,16 +195,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			e.printStackTrace();
 		}
 		vampireTarget = null;
-		
-		/*Addto run
-		if(vampireTarget!=null){
-			attemptToKillVampireTarget();
-			for(User user : users){
-				userGateway.updateUserProtected(user, 0);
-			}
-			vampireTarget = null;
-		}*/
-	
 	}
 
 	private void setSpecialActionText(){
@@ -240,6 +231,9 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					if(lobbyGateway.getFinishedCount(lobby.getId())==lobby.getMaxPlayers()) {
 						lobbyGateway.setFinishedCount(lobby.getId(), 0);
 					}
+					
+					
+					
 					User highestUser = new User();
 					int highest = 0;
 					int numVotes = 0;
@@ -265,6 +259,14 @@ public class RunningGameController extends Thread implements Initializable, Gene
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						}
+					}else{
+						if(vampireTarget!=null){
+							attemptToKillVampireTarget();
+							for(User user : users){
+								userGateway.updateUserProtected(user, 0);
+							}
+							vampireTarget = null;
 						}
 					}
 					lobbyGateway.incrementFinishedCount(lobby.getId());
@@ -316,6 +318,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					while(lobbyGateway.getFinishedCount(lobby.getId())!=lobby.getMaxPlayers()) {
 						Thread.sleep(1000);
 					}
+					
 					lobbyGateway.resetReadyCount(lobby.getId());
 				}
 				
