@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -49,6 +50,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	private boolean newTurn;
 	private int numVampires;
 	private int alivePlayers;
+	private boolean vamWon, vilWon;
 	
 	public RunningGameController(Object lobby, User user, MessageGateway gate, LobbyGateway lobbygw, RoleGateway rolegw, UserGateway usergw){
 		this.lobby = (Lobby) lobby;
@@ -260,10 +262,14 @@ public class RunningGameController extends Thread implements Initializable, Gene
 						}
 					}
 					if(numVampires==0) {
-						sendMessage("GameMaster", "Villagers have won!");
+						vilWon = true;
+						newTurn=false;
+						//sendMessage("GameMaster", "Villagers have won!");
 					}
 					else if(numVampires>alivePlayers/2) {
-						sendMessage("GameMaster", "Vampires have won!");
+						vamWon  = true;
+						newTurn=false;
+						//sendMessage("GameMaster", "Vampires have won!");
 					}
 					if(player.getAlive() == 0){
 						disableButtons();
@@ -296,7 +302,23 @@ public class RunningGameController extends Thread implements Initializable, Gene
 			Platform.runLater(new Runnable() {
 				@Override public void run() {
 					chatListView.setItems(chatLog);
-					if(newTurn) {
+					if(vamWon || vilWon){
+						if(vamWon){
+							vamWon  =  false;
+							vilWon  =  false;
+							AlertHelper.showWarningMessage("GAME OVER","Vampires have won!","You will be redirected to the lobby now.");
+							resetUser();
+							ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
+						} else{
+							vilWon  =  false;
+							vamWon  =  false;
+							AlertHelper.showWarningMessage("GAME OVER","Villagers have won!","You will be redirected to the lobby now.");
+							resetUser();
+							ViewManager.getInstance().changeView(ViewManager.MATCH_PAGE, null);
+						}
+						newTurn = false;
+					}
+					else if(newTurn && !(vamWon || vilWon)) {
 						newTurn=false;
 						if(turnCount%2==0) {
 							AlertHelper.showWarningMessage("New turn alert.","It is now night "+turnCount/2+".","");
@@ -305,10 +327,37 @@ public class RunningGameController extends Thread implements Initializable, Gene
 							AlertHelper.showWarningMessage("New turn alert.","It is now day "+(turnCount/2+1)+".","");
 						}
 					}
-				
 				}
 			});
 			
+		}
+	}
+	
+	public void resetUser(){
+		Connection  conn = ViewManager.getInstance().getConnection();
+		User user = ViewManager.getInstance().getUser();
+		if(user != null) {
+			UserGateway usergate = new UserGateway(conn);
+			try {
+				usergate.updateUserLobby(ViewManager.getInstance().getUser(), -1);
+				if(user.getLobbyId() > 0) {
+					LobbyGateway lobbygate = new LobbyGateway(conn);
+					ObservableList<User> users = lobbygate.getUsersByLobbyId(user.getLobbyId());
+					if(users.size() == 0) {
+						lobbygate.delete(user.getLobbyId());
+					} else {
+						if(user.getReady() == true) {
+							lobbygate.updateReadyCount(user.getLobbyId(), -1);
+						}
+					}
+				}
+				usergate.resetUserVotes(user.getUsername());
+				usergate.updateUserAlive(user, 1);
+				RoleGateway roleGate = new RoleGateway(conn);
+				roleGate.updateRemoveUser(user.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
