@@ -266,7 +266,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 						newTurn=false;
 						//sendMessage("GameMaster", "Villagers have won!");
 					}
-					else if(numVampires>alivePlayers/2) {
+					else if(numVampires>=alivePlayers/2) {
 						vamWon  = true;
 						newTurn=false;
 						//sendMessage("GameMaster", "Vampires have won!");
