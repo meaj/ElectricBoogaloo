@@ -70,8 +70,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void onVoteClicked(){
-		int sum = 0;
-		User highestUser = new User();
 		User selected = playerList.getSelectionModel().getSelectedItem();
 		try {
 			userGateway.voteForUser(selected.getUsername());
@@ -80,37 +78,6 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		}
 		sendMessage("GameMaster", player.getUsername()+ " has voted to kill " + selected.getUsername());
 		voteButton.setDisable(true);
-		for(User user: users){
-			try {
-				sum += userGateway.getNumVotesForUser(user.getUsername());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if(sum == users.size()){
-			int highest = 0;
-			int numVotes = 0;
-			for(User user: users){
-				try {
-					numVotes = userGateway.getNumVotesForUser(user.getUsername());
-					if(numVotes > highest){
-						highestUser = user;
-						highest = numVotes;
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			Role role = new Role("Villager", -1);
-			try {
-				role = roleGateway.getRoleByUserId(highestUser.getId());
-			} catch (SQLException e2) {
-
-				e2.printStackTrace();
-			}
-			sendMessage("GameMaster",highestUser.getUsername() + " has been jailed." + " He was the " + role );
-			
-		}
 	}
 	
 	@FXML void onEnter(ActionEvent ae){
@@ -273,8 +240,39 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					if(lobbyGateway.getFinishedCount(lobby.getId())==lobby.getMaxPlayers()) {
 						lobbyGateway.setFinishedCount(lobby.getId(), 0);
 					}
+					User highestUser = new User();
+					int highest = 0;
+					int numVotes = 0;
+					for(User user: users){
+						try {
+							numVotes = userGateway.getNumVotesForUser(user.getUsername());
+							if(numVotes > highest){
+								highestUser = user;
+								highest = numVotes;
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					if(highest==0) {	
+					}
+					else if(highest>alivePlayers/2&&turnCount%2==1) {
+						try {
+							userGateway.updateUserAlive(highestUser, 0);
+							for(User user: users){
+									userGateway.resetUserVotes(user.getUsername());
+							}
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 					lobbyGateway.incrementFinishedCount(lobby.getId());
+					int alive=player.getAlive();
 					player.setAlive(userGateway.getAlive(player.getId()));
+					if(alive!=player.getAlive()) {
+						sendMessage("GameMaster", player.getUsername()+ " has been killed!");
+					}
 					alivePlayers=0;
 					for(User user : users) {
 						alivePlayers+=userGateway.getAlive(user.getId()); 
@@ -283,6 +281,25 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					readyUpButton.setSelected(false);
 					player.setReady(false);
 					newTurn=true;
+					//code to check and make sure the vampire count is accurate each round
+					numVampires=0;
+					for(User user : users) {
+						try {
+							
+							Role r=roleGateway.getRoleByUserId(user.getId());
+							if(r.getRole().equals("Vampire")&&userGateway.getAlive(user.getId())==1) {
+								numVampires++;
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					if(numVampires==0) {
+						sendMessage("GameMaster", "Villagers have won!");
+					}
+					else if(numVampires>alivePlayers/2) {
+						sendMessage("GameMaster", "Vampires have won!");
+					}
 					if(player.getAlive() == 0){
 						disableButtons();
 					}
