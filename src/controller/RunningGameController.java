@@ -331,7 +331,12 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					chatListView.setItems(chatLog);
 					if(newTurn) {
 						newTurn=false;
-						AlertHelper.showWarningMessage("New turn alert.","It is now turn "+turnCount+".","");
+						if(turnCount%2==0) {
+							AlertHelper.showWarningMessage("New turn alert.","It is now night "+turnCount/2+".","");
+						}
+						else {
+							AlertHelper.showWarningMessage("New turn alert.","It is now day "+(turnCount/2+1)+".","");
+						}
 					}
 				
 				}
