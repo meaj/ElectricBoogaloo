@@ -213,4 +213,40 @@ private Connection conn;
 		}
 		return alive;
 	}
+	
+	public void updateUserProtected(User user, int protect) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE User Set protected = ? WHERE id = ?");
+			st.setInt(1, protect);
+			st.setInt(2, user.getId());
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+	}
+	
+	public int getProtected(int userId) throws SQLException {
+		int alive = 0;
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM User WHERE id = ?");
+			st.setInt(1, userId);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				alive = rs.getInt("protected");
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if(st != null) {
+				st.close();
+			}
+		}
+		return alive;
+	}
 }
