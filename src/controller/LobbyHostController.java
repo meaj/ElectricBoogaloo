@@ -32,6 +32,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 	@FXML private ListView<Message> pregameChatListView;
 	@FXML private ListView<User> playerListView;
 	@FXML private Label playersLabel;
+	@FXML private Label readyPlayerLabel;
 	@FXML private ListView<Role> roleListView;
 	
 	private ObservableList<Message> chatLog;
@@ -73,6 +74,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 			}
 			Platform.runLater(new Runnable() {
 				@Override public void run() {
+					
 					if(readyCount != lobby.getMaxPlayers()) {
 						starting = false;
 						countdown = 3;
@@ -107,6 +109,7 @@ public class LobbyHostController extends Thread implements Initializable, Genera
 					pregameChatListView.setItems(chatLog);
 					playerListView.setItems(users);
 					playersLabel.setText("Players: " + users.size() + "/" + lobby.getMaxPlayers());
+					readyPlayerLabel.setText("Ready Players: " + readyCount + "/" + lobby.getMaxPlayers());
 				}
 			});
 		}
