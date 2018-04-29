@@ -96,41 +96,51 @@ public class RunningGameController extends Thread implements Initializable, Gene
 	}
 	
 	@FXML void specialActionPressed(){
+		boolean valid = false;
 		switch(player.getRole()){
 			case "Vampire":
-				handleVampireAction();
+				valid = handleVampireAction();
 				break;
 			case "Detective":
-				handleDetectiveAction();
+				valid = handleDetectiveAction();
 				break;
 			case "Priest":
-				handlePriestAction();
+				valid = handlePriestAction();
 				break;
 			case "Villager":
-				handleVillagerAction();
+				valid = handleVillagerAction();
 				break;
 		}
-		specialActionButton.setDisable(true);
+		if(valid) {
+			specialActionButton.setDisable(true);
+		}
 
 	}
 	
-	private void handleVillagerAction() {
-		
+	private boolean handleVillagerAction() {
+		sendMessage("GameMaster", "There is panic amongst the villagers");
+		return true;
 	}
 
-	private void handlePriestAction() {
+	private boolean handlePriestAction() {
 		User selectedUser = playerList.getSelectionModel().getSelectedItem();
 		if(selectedUser != null){
-			try {
-				userGateway.updateUserProtected(selectedUser, 1);
-				AlertHelper.showWarningMessage("Priest", "", selectedUser.getUsername() + " will be protected tonight.");
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(selectedUser.getId() != player.getId()) {
+				try {
+					userGateway.updateUserProtected(selectedUser, 1);
+					AlertHelper.showWarningMessage("Priest", "", selectedUser.getUsername() + " will be protected tonight.");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} else {
+				AlertHelper.showWarningMessage("Priest.", "Protect action", "You can't protect yourself loser");
+				return false;
 			}
 		}
+		return true;
 	}
 
-	private void handleDetectiveAction() {
+	private boolean handleDetectiveAction() {
 		User selectedUser = playerList.getSelectionModel().getSelectedItem();
 		if(selectedUser != null){
 			try {
@@ -146,16 +156,17 @@ public class RunningGameController extends Thread implements Initializable, Gene
 		}else{
 			AlertHelper.showWarningMessage("Detective.", "No player selected", "Please choose a player from the list of players to investigate");
 		}
-		
+		return true;
 	}
 
-	private void handleVampireAction() {
+	private boolean handleVampireAction() {
 		User selected = playerList.getSelectionModel().getSelectedItem();
 		try {
 			userGateway.voteForUser(selected.getUsername());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		return true;
 	}
 	
 	private void setSpecialActionText(){
