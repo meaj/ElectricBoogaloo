@@ -23,9 +23,9 @@ public class ConnectionFactory {
 
 	        //create the datasource
 	        MysqlDataSource ds = new MysqlDataSource();
-	        ds.setURL(props.getProperty("jdbc:mysql://easel2.fulgentcorp.com:3306/lgy513"));
-	        ds.setUser(props.getProperty("lgy513"));
-	        ds.setPassword(props.getProperty("password"));
+	        ds.setURL("jdbc:mysql://easel2.fulgentcorp.com:3306/lgy513");
+	        ds.setUser("lgy513");
+	        ds.setPassword("password");
 			
 			//create connection
 	        conn = ds.getConnection();
