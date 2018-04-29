@@ -293,7 +293,9 @@ public class RunningGameController extends Thread implements Initializable, Gene
 						userGateway.updateUserProtected(user, 0);
 					}
 					lobbyGateway.resetReadyCount(lobby.getId());
-					this.readyUpButton.setDisable(false);
+					if(player.getAlive()!=0) {
+						this.readyUpButton.setDisable(false);
+					}
 				}
 				
 				Thread.sleep(1000);
