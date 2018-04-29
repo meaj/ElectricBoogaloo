@@ -69,31 +69,31 @@ public class ViewManager {
 		URL fxmlFile = null;
 		switch(viewType) {
 			case LOGIN:
-				fxmlFile = this.getClass().getResource("../view/Login.fxml");
+				fxmlFile = this.getClass().getResource("/view/Login.fxml");
 				controller = new LoginController(container, new UserGateway(connection));
 				break;
 			case MATCH_PAGE:
-				fxmlFile = this.getClass().getResource("../view/MatchPage.fxml");
+				fxmlFile = this.getClass().getResource("/view/MatchPage.fxml");
 				controller = new MatchPageController(user, new LobbyGateway(connection), new UserGateway(connection), new RoleGateway(connection));
 				break;
 			case RUNNING_GAME:
-				fxmlFile = this.getClass().getResource("../view/RunningGameView.fxml");
+				fxmlFile = this.getClass().getResource("/view/RunningGameView.fxml");
 				controller = new RunningGameController(arg, user, new MessageGateway(connection), new LobbyGateway(connection), new RoleGateway(connection), new UserGateway(connection));
 				break;
 			case LOBBY_HOST:
-				fxmlFile = this.getClass().getResource("../view/LobbyHostView.fxml");
+				fxmlFile = this.getClass().getResource("/view/LobbyHostView.fxml");
 				controller = new LobbyHostController(arg, new MessageGateway(connection), new LobbyGateway(connection), new RoleGateway(connection));
 				break;
 			case LOBBY_PLAYER:
-				fxmlFile = this.getClass().getResource("../view/LobbyPlayerView.fxml");
+				fxmlFile = this.getClass().getResource("/view/LobbyPlayerView.fxml");
 				controller = new LobbyPlayerController(arg, new MessageGateway(connection), new LobbyGateway(connection), new RoleGateway(connection));
 				break;
 			case GAME_SETTINGS:
-				fxmlFile = this.getClass().getResource("../view/GameSettings.fxml");
+				fxmlFile = this.getClass().getResource("/view/GameSettings.fxml");
 				controller = new GameSettingsController(user, new LobbyGateway(connection), new UserGateway(connection), new RoleGateway(connection));
 				break;
 			case RULES:
-				fxmlFile = this.getClass().getResource("../view/RulesView.fxml");
+				fxmlFile = this.getClass().getResource("/view/RulesView.fxml");
 				controller = new RulesController();
 				break;
 		}

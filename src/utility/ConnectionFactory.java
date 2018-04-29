@@ -1,10 +1,10 @@
 package utility;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+//import java.io.FileInputStream;
+//import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+//import java.util.Properties;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -16,7 +16,7 @@ public class ConnectionFactory {
 		
 		//read properties file
 		try {
-    		Properties props = new Properties();
+//    		Properties props = new Properties();
     		//FileInputStream fis = new FileInputStream("db.properties");
 	        //props.load(fis);
 	        //fis.close();

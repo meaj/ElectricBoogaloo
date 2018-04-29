@@ -30,7 +30,7 @@ public class Launcher extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		URL fxmlFile = this.getClass().getResource("../view/ViewContainer.fxml");
+		URL fxmlFile = this.getClass().getResource("/view/ViewContainer.fxml");
 		FXMLLoader loader = new FXMLLoader(fxmlFile);
 		ContainerController cc = new ContainerController();
 		
@@ -42,7 +42,7 @@ public class Launcher extends Application {
 		stage.setScene(scene);
 		stage.show();
 		
-		fxmlFile = this.getClass().getResource("../view/Login.fxml");
+		fxmlFile = this.getClass().getResource("/view/Login.fxml");
 		loader = new FXMLLoader(fxmlFile);
 		LoginController lc = new LoginController(cc, new UserGateway(conn));
 		loader.setController(lc);
