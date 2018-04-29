@@ -223,7 +223,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 					}
 					if(highest==0) {	
 					}
-					else if(highest>alivePlayers/2&&turnCount%2==1) {
+					else if((highest>(alivePlayers/2))&&(turnCount%2==1)) {
 						try {
 							userGateway.updateUserAlive(highestUser, 0);
 							for(User user: users){
@@ -234,7 +234,7 @@ public class RunningGameController extends Thread implements Initializable, Gene
 							e.printStackTrace();
 						}
 					}
-					else{
+					else if(turnCount%2==0){
 						try {
 							if(userGateway.getProtected(highestUser.getId())!=1) {
 								userGateway.updateUserAlive(highestUser, 0);
